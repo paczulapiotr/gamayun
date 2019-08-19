@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Gamayun.Infrastucture.Entities
 {
-    public class Topic
+    public class Topic : Entity
     {
         public Teacher Teacher { get; set; }
         public string Name { get; set; }

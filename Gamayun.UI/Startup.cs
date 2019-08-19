@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Gamayun.Infrastucture.Command;
 
 namespace Gamayun.UI
 {
@@ -37,6 +38,8 @@ namespace Gamayun.UI
             services.AddDbContext<GamayunDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:Gamayun"]));
             services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<GamayunDbContext>();
             
+            services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
+
             services.ConfigureApplicationCookie(opt =>
             {
                 opt.LoginPath = "/Account/Login";

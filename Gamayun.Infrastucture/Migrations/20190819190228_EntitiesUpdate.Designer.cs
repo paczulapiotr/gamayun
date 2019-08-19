@@ -4,14 +4,16 @@ using Gamayun.Infrastucture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gamayun.Infrastucture.Migrations
 {
     [DbContext(typeof(GamayunDbContext))]
-    partial class GamayunDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190819190228_EntitiesUpdate")]
+    partial class EntitiesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,21 +70,6 @@ namespace Gamayun.Infrastucture.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Admin", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AppUserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AppUserID");
-
-                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Presence", b =>
@@ -316,13 +303,6 @@ namespace Gamayun.Infrastucture.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Admin", b =>
-                {
-                    b.HasOne("Gamayun.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserID");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Presence", b =>

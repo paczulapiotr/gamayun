@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Gamayun.Infrastucture.Entities
 {
-    public class Section
+    public class Section : Entity
     {
         public SectionState State{ get; set; }
         public int? TopicID { get; set; }

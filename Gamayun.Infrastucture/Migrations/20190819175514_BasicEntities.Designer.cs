@@ -4,14 +4,16 @@ using Gamayun.Infrastucture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gamayun.Infrastucture.Migrations
 {
     [DbContext(typeof(GamayunDbContext))]
-    partial class GamayunDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190819175514_BasicEntities")]
+    partial class BasicEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,21 +72,6 @@ namespace Gamayun.Infrastucture.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Admin", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AppUserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AppUserID");
-
-                    b.ToTable("Admins");
-                });
-
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Presence", b =>
                 {
                     b.Property<int>("ID")
@@ -103,7 +90,7 @@ namespace Gamayun.Infrastucture.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("Presences");
+                    b.ToTable("Presence");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.PresenceDate", b =>
@@ -114,13 +101,13 @@ namespace Gamayun.Infrastucture.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("SectionID");
+                    b.Property<int?>("SectionID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("SectionID");
 
-                    b.ToTable("PresenceDates");
+                    b.ToTable("PresenceDate");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Section", b =>
@@ -146,13 +133,9 @@ namespace Gamayun.Infrastucture.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserID");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("AppUserID");
-
-                    b.ToTable("Students");
+                    b.ToTable("Student");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.StudentSection", b =>
@@ -176,13 +159,9 @@ namespace Gamayun.Infrastucture.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserID");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("AppUserID");
-
-                    b.ToTable("Teachers");
+                    b.ToTable("Teacher");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Topic", b =>
@@ -201,7 +180,7 @@ namespace Gamayun.Infrastucture.Migrations
 
                     b.HasIndex("TeacherID");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topic");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -318,13 +297,6 @@ namespace Gamayun.Infrastucture.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Admin", b =>
-                {
-                    b.HasOne("Gamayun.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserID");
-                });
-
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Presence", b =>
                 {
                     b.HasOne("Gamayun.Infrastucture.Entities.PresenceDate")
@@ -338,10 +310,9 @@ namespace Gamayun.Infrastucture.Migrations
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.PresenceDate", b =>
                 {
-                    b.HasOne("Gamayun.Infrastucture.Entities.Section", "Section")
+                    b.HasOne("Gamayun.Infrastucture.Entities.Section")
                         .WithMany("PresenceDates")
-                        .HasForeignKey("SectionID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SectionID");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Section", b =>
@@ -349,13 +320,6 @@ namespace Gamayun.Infrastucture.Migrations
                     b.HasOne("Gamayun.Infrastucture.Entities.Topic", "Topic")
                         .WithMany("Sections")
                         .HasForeignKey("TopicID");
-                });
-
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Student", b =>
-                {
-                    b.HasOne("Gamayun.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserID");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.StudentSection", b =>
@@ -371,17 +335,10 @@ namespace Gamayun.Infrastucture.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Teacher", b =>
-                {
-                    b.HasOne("Gamayun.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserID");
-                });
-
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Topic", b =>
                 {
                     b.HasOne("Gamayun.Infrastucture.Entities.Teacher", "Teacher")
-                        .WithMany("Topics")
+                        .WithMany()
                         .HasForeignKey("TeacherID");
                 });
 
