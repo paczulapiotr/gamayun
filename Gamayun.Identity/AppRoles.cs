@@ -6,8 +6,8 @@ namespace Gamayun.Identity
 {
     public static class AppRoles
     {
-        public static string Admin => "ADMIN";
-        public static string Teacher => "ADMIN";
-        public static string Student => "ADMIN";
+        public const string Admin = "Admin";
+        public const string Teacher = "Teacher";
+        public const string Student = "Student";
     }
 }

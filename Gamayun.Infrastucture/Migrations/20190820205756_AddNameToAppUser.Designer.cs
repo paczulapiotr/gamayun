@@ -4,14 +4,16 @@ using Gamayun.Infrastucture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gamayun.Infrastucture.Migrations
 {
     [DbContext(typeof(GamayunDbContext))]
-    partial class GamayunDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190820205756_AddNameToAppUser")]
+    partial class AddNameToAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
