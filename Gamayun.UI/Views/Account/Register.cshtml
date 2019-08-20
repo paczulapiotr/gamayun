@@ -1,0 +1,54 @@
+﻿@using Gamayun.UI.Models.Account
+@model RegisterVm
+@{
+    ViewData["Title"] = "Register";
+}
+
+<form method="post" asp-controller="Account" asp-action="Register">
+    <div class="form-group">
+        <label class="form-control" asp-for="Login">Login</label>
+        <input asp-for="Login" required />
+        <div class="invalid-feedback">
+            Please provide a login.
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-control" asp-for="Email">Email</label>
+        <input type="email" asp-for="Email" required />
+        <div class="invalid-feedback">
+            Please provide an email.
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-control" asp-for="RepeatEmail">Repeat Email</label>
+        <input type="email" asp-for="RepeatEmail" required />
+        <div class="invalid-feedback">
+            Please provide an email confirmation.
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-control" asp-for="Password">Password</label>
+        <input type="password" class="form-control" asp-for="Password" required />
+    </div>
+        <div class="invalid-feedback">
+            Please provide a password.
+        </div>
+    <div class="form-group">
+        <label asp-for="RepeatPassword">Repeat Password</label>
+        <input type="password" class="form-control" asp-for="RepeatPassword" required />
+        <div class="invalid-feedback">
+            Please provide a password confirmation.
+        </div>
+    </div>
+    <div class="form-check">
+        <label asp-for="AgreeToTerms">Agree to terms and conditions</label>
+        <input class="form-check-input" type="checkbox" asp-for="AgreeToTerms" required />
+        <div class="invalid-feedback">
+            You must agree before submitting.
+        </div>
+    </div>
+    <div>
+        <span>@ViewBag.ErrorMessage</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>

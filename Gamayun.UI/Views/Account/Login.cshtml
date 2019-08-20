@@ -1,0 +1,32 @@
+﻿@using Gamayun.UI.Models.Account
+@model LoginVm
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<form method="post" asp-controller="Account" asp-action="Login">
+    <div class="form-group">
+        <label class="form-control" asp-for="Login">Login</label>
+        <input asp-for="Login" required />
+        <div class="invalid-feedback">
+            Please provide a login.
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-control" asp-for="Password">Password</label>
+        <input type="password" class="form-control" asp-for="Password" required />
+    </div>
+    <div class="invalid-feedback">
+        Please provide a password.
+    </div>
+    <div>
+        <span>@ViewBag.ErrorMessage</span>
+    </div>
+    <div>
+        <span>@ViewBag.Message</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+

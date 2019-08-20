@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Gamayun.Infrastucture.Command;
+using Microsoft.AspNetCore.Identity;
 
 namespace Gamayun.UI
 {
@@ -29,6 +30,7 @@ namespace Gamayun.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+                       
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -36,7 +38,9 @@ namespace Gamayun.UI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddDbContext<GamayunDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:Gamayun"]));
-            services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<GamayunDbContext>();
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<GamayunDbContext>()
+                .AddDefaultTokenProviders();
             
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
 
@@ -54,7 +58,10 @@ namespace Gamayun.UI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    IdentitySeeder.Seed(scope.ServiceProvider);
+                }
             }
             else
             {
@@ -71,9 +78,12 @@ namespace Gamayun.UI
             {
                 routes.MapRoute(
                     "default",
-                    "{controller}/{action}",
-                    new { controller = "Account", action = "Index" }
-                );
+                    "{controller=Account}/{action=Login}"
+                    );
+                routes.MapRoute(
+                    "area",
+                    "{area:exists}/{controller=Home}/{action=Index}"
+                    );
             });
         }
     }
