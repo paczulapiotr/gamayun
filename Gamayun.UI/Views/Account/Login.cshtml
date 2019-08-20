@@ -2,31 +2,60 @@
 @model LoginVm
 @{
     ViewData["Title"] = "Login";
+    ViewBag.Body = "bg-gradient-primary";
+    Layout = "_Layout";
 }
 
+<div class="container">
 
-<form method="post" asp-controller="Account" asp-action="Login">
-    <div class="form-group">
-        <label class="form-control" asp-for="Login">Login</label>
-        <input asp-for="Login" required />
-        <div class="invalid-feedback">
-            Please provide a login.
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                </div>
+                                <form class="user" method="post" asp-controller="Account" asp-action="Login">
+                                    <div class="form-group">
+                                        <input asp-for="Login" class="form-control form-control-user" placeholder="Enter Username..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input asp-for="Password" type="password" class="form-control form-control-user" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <input asp-for="RememberMe" type="checkbox" class="custom-control-input">
+                                            <label class="custom-control-label" asp-for="RememberMe">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <div @(ViewBag.ErrorMessage != null ? "" : "hidden") class="alert alert-danger">
+                                        <span>@ViewBag.ErrorMessage</span>
+                                    </div>
+                                    <div @(ViewBag.Message != null ? "" : "hidden") class="alert alert-success">
+                                        <span>@ViewBag.Message</span>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small" href="@Url.Action("Register","Account")">Create an Account!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <div class="form-group">
-        <label class="form-control" asp-for="Password">Password</label>
-        <input type="password" class="form-control" asp-for="Password" required />
-    </div>
-    <div class="invalid-feedback">
-        Please provide a password.
-    </div>
-    <div>
-        <span>@ViewBag.ErrorMessage</span>
-    </div>
-    <div>
-        <span>@ViewBag.Message</span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
 
+    </div>
 
+</div>

@@ -63,7 +63,7 @@ namespace Gamayun.UI.Controllers
                 ViewBag.ErrorMessage = "Invalid login credentials";
                 return View();
             }
-            await _signInManager.SignInAsync(user, true);
+            await _signInManager.SignInAsync(user, vm.RememberMe);
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
             
             switch (role)
@@ -99,14 +99,14 @@ namespace Gamayun.UI.Controllers
         public async Task<ViewResult> Register(RegisterVm vm)
         {
 
-            if (vm.Password != vm.RepeatPassword)
-            {
-                ViewBag.ErrorMessage = "Password must be the matching";
-                return View();
-            }
             if (vm.Email != vm.RepeatEmail)
             {
                 ViewBag.ErrorMessage = "Emails must be the matching";
+                return View();
+            }
+            if (vm.Password != vm.RepeatPassword)
+            {
+                ViewBag.ErrorMessage = "Password must be the matching";
                 return View();
             }
             if (_userManager.Users.Any(u => u.UserName == vm.Login)) 
@@ -116,6 +116,8 @@ namespace Gamayun.UI.Controllers
             }
             var user = new AppUser
             {
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
                 UserName = vm.Login,
                 Email = vm.Email,
                 EmailConfirmed = true
