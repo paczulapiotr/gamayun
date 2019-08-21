@@ -4,6 +4,10 @@
     var sideMenuTree = ViewBag.SideMenuTree as SideMenuTree ?? new SideMenuTree();
 }
 
+@section ScriptPackages {
+    <script src="~/vendor/jsgrid-1.5.3/dist/jsgrid.min.js" asp-append-version="true"></script>
+}
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -115,3 +119,4 @@
         </div>
     </div>
 </div>
+
