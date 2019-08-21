@@ -1,0 +1,57 @@
+﻿@model SideMenuTree
+@{
+    int counter = 0;
+}
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+@foreach (var leaf in Model.Leaves)
+{
+    <div class="sidebar-heading">
+        <h6><strong>@leaf.HeaderName</strong></h6>
+    </div>
+
+    foreach (var category in leaf.Categories)
+    {
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            @if (category.HasChildren)
+            {
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@category.CategoryName" aria-expanded="true" aria-controls="@category.CategoryName">
+                    <i class="@category.Icon"></i>
+                    <span>@category.CategoryName</span>
+                </a>
+                <div id="@category.CategoryName" class="collapse" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">@category.CategoryName</h6>
+                        @foreach (var option in category.Options)
+                        {
+                            <a class="collapse-item" href="@option.AnchorHref">@option.OptionName</a>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a class="nav-link" href="@category.AnchorHref">
+                    <i class="@category.Icon"></i>
+                    <span>@category.CategoryName</span>
+                </a>
+            }
+        </li>
+    }
+    counter++;
+    <!-- Divider -->
+    if (counter >= Model.Leaves.Count())
+    {
+        <hr class="sidebar-divider d-none d-md-block">
+    }
+    else
+    {
+        <hr class="sidebar-divider">
+    }
+}
+
+<!-- Divider -->

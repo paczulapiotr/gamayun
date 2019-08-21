@@ -40,7 +40,8 @@ namespace Gamayun.UI
             services.AddDbContext<GamayunDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:Gamayun"]));
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<GamayunDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>();
             
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
 
