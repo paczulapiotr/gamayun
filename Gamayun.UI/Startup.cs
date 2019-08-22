@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gamayun.Identity;
+﻿using Gamayun.Identity;
 using Gamayun.Infrastucture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Design;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Gamayun.Infrastucture.Command;
 using Microsoft.AspNetCore.Identity;
+using Gamayun.Infrastucture.Query;
 
 namespace Gamayun.UI
 {
@@ -44,6 +39,8 @@ namespace Gamayun.UI
                 .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>();
             
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
+            services.AddScoped<IGridQueryRunner, GridQueryRunner>();
+            services.AddTransient<IGridQueryHandler<MyClass, TestQueryHandler.Query>, TestQueryHandler>();
 
             services.ConfigureApplicationCookie(opt =>
             {

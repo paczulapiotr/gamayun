@@ -1,19 +1,21 @@
 ﻿
+using Gamayun.Infrastucture.Grid;
+using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Controllers;
 using Gamayun.UI.Models;
-using Gamayun.UI.Models.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace Gamayun.UI.Areas.Student.Controllers
 {
-    public class MyClass
-    {
-        public int Age { get; set; }
-        public string Name { get; set; }
-    }
     public class HomeController : StudentController
     {
+        private readonly IGridQueryRunner _queryRunner;
+
+        public HomeController(IGridQueryRunner queryDispatcher)
+        {
+            _queryRunner = queryDispatcher;
+        }
         public ViewResult Index()
         {
             ViewBag.SideMenuTree = new SideMenuTree
@@ -70,28 +72,7 @@ namespace Gamayun.UI.Areas.Student.Controllers
         [HttpPost]
         public JsonResult Values([FromBody]GridFilters<MyClass> filters)
         {
-            var vm = new GridResult<MyClass>
-            {
-                ItemsCount = 100,
-                Data = new MyClass[]
-                {
-                    new MyClass{ Age = 19, Name="Janek Moniek"},
-                    new MyClass{ Age = 20, Name="Anina Moniek"},   
-                    new MyClass{ Age = 21, Name="Janek Moniek"},
-                    new MyClass{ Age = 22, Name="Anina Moniek"},   
-                    new MyClass{ Age = 23, Name="Janek Moniek"},
-                    new MyClass{ Age = 24, Name="Anina Moniek"},   
-                    new MyClass{ Age = 22, Name="Janek Moniek"},
-                    new MyClass{ Age = 22, Name="Anina Moniek"},   
-                    new MyClass{ Age = 19, Name="Janek Moniek"},
-                    new MyClass{ Age = 20, Name="Anina Moniek"},   
-                    new MyClass{ Age = 25, Name="Janek Moniek"},
-                    new MyClass{ Age = 26, Name="Anina Moniek"},   
-                    new MyClass{ Age = 27, Name="Janek Moniek"},
-                    new MyClass{ Age = 20, Name="Anina Moniek"},
-                    new MyClass{ Age = 33, Name="Anina Moniek"},
-                }
-            };
+            var vm = _queryRunner.Run(filters, new TestQueryHandler.Query());
 
             return Json(vm);
         }

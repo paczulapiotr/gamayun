@@ -8,7 +8,7 @@ namespace Gamayun.Infrastucture.Grid
     public class GridProperty
     {
         public string Name { get; set; }
-        public GridPropertyType Type { get; set; }
+        public string Type { get; set; }
         public string Title { get; set; }
     }
 }

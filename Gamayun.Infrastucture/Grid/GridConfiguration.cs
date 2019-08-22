@@ -20,11 +20,11 @@ namespace Gamayun.Infrastucture.Grid
 
                 var titleAttr = prop.GetCustomAttribute<PropertyTitleAttribute>();
 
-                gridProp.Name = prop.Name;
+                gridProp.Name = prop.Name.ToLower();
                 gridProp.Title = (titleAttr != null)
                     ? titleAttr.Title
                     : prop.Name;
-                gridProp.Type = prop.PropertyType.GetGridType();
+                gridProp.Type = prop.PropertyType.GetGridType().GetName();
                 gridProps.Add(gridProp);
             }
             return gridProps;

@@ -4,12 +4,15 @@
 
 }
 <div id="@Model.GridSelector"></div>
+
 <script>
     $(function () {
         $("#@Model.GridSelector").jsGrid({
             fields: [
-                { name: "name", type: "text", width: 150 },
-                { name: "age", type: "number", width: 70 }
+                @foreach (var property in @Model.GetGridProperties())
+                {
+                    @:{ name: "@property.Name", type: "@property.Type", title: "@property.Title"},
+                }
             ],
             controller: {
                 loadData: function (filter) {
