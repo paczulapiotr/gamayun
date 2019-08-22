@@ -3,7 +3,10 @@
     Layout = "_Layout";
     var sideMenuTree = ViewBag.SideMenuTree as SideMenuTree ?? new SideMenuTree();
 }
-
+@section Css {
+    <link href="~/vendor/jsgrid-1.5.3/dist/jsgrid.min.css" rel="stylesheet">
+    <link href="~/vendor/jsgrid-1.5.3/dist/jsgrid-theme.min.css" rel="stylesheet">
+}
 @section ScriptPackages {
     <script src="~/vendor/jsgrid-1.5.3/dist/jsgrid.min.js" asp-append-version="true"></script>
 }

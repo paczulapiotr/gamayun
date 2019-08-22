@@ -22,7 +22,7 @@
     @RenderSection("Css", required: false)
 </head>
 <body class="@ViewBag.Body">
-    @RenderSection("ScriptPackages", required: false)
+
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
@@ -41,6 +41,7 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
+    @RenderSection("ScriptPackages", required: false)
 
     @RenderBody()
 

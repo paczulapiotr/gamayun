@@ -1,1 +1,4 @@
-﻿<div>Student Home</div>
+﻿@using Gamayun.UI.Models.Shared.Grid
+<div>Student Home</div>
+
+@await Html.PartialAsync("_Grid", new GridConfiguration { GridSelector = "TestGrid" })

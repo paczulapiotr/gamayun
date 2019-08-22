@@ -1,0 +1,82 @@
+﻿@using Gamayun.Infrastucture.Grid
+@model IGridConfiguration
+@{
+
+}
+<div id="@Model.GridSelector"></div>
+<script>
+    $(function () {
+        $("#@Model.GridSelector").jsGrid({
+            fields: [
+                { name: "name", type: "text", width: 150 },
+                { name: "age", type: "number", width: 70 }
+            ],
+            controller: {
+                loadData: function (filter) {
+                    var data = formatFilter(filter);
+                    console.log(data);
+                    
+                    return $.ajax({
+                        type: "POST",
+                        url: `https://localhost:44344/student/home/values`,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify(data),
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    });
+                },
+            },
+            height: "auto",
+            width: "100%",
+
+            heading: true,
+            selecting: true,
+            pageLoading: true,
+
+            filtering: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageSize: 15,
+            pageButtonCount: 5,
+
+            rowClass: function (item, itemIndex) { },
+            rowClick: function (args) { },
+            rowDoubleClick: function (args) { },
+
+            noDataContent: "No data available",
+            confirmDeleting: true,
+            deleteConfirm: "Are you sure?",
+
+            invalidNotify: function (args) { },
+            invalidMessage: "Invalid data entered!",
+
+            loadIndication: true,
+            loadIndicationDelay: 500,
+            loadMessage: "Please, wait...",
+            loadShading: true,
+            updateOnResize: true,
+
+        });
+    });
+
+    var formatFilter = function (filter) {
+        var filterObject = jQuery.extend({}, filter);
+        delete filterObject.pageIndex;
+        delete filterObject.pageSize;
+        delete filterObject.sortField;
+        delete filterObject.sortOrder;
+
+        return {
+            pageIndex: filter.pageIndex,
+            pageSize: filter.pageSize,
+            sortField: filter.sortField,
+            sortOrder: filter.sortOrder,
+            filters: filterObject
+        };
+    } 
+</script>
