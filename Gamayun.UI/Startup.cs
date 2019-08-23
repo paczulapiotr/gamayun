@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Gamayun.Infrastucture.Command;
 using Microsoft.AspNetCore.Identity;
 using Gamayun.Infrastucture.Query;
+using Gamayun.Infrastucture.Mapper;
+using AutoMapper;
 
 namespace Gamayun.UI
 {
@@ -41,7 +43,10 @@ namespace Gamayun.UI
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
             services.AddScoped<IGridQueryRunner, GridQueryRunner>();
             services.AddTransient<IGridQueryHandler<MyClass, TestQueryHandler.Query>, TestQueryHandler>();
-
+            
+            var autoMapperConfig = AutomapperService.Initialize();
+            services.AddSingleton<MapperConfiguration>(autoMapperConfig);
+            
             services.ConfigureApplicationCookie(opt =>
             {
                 opt.LoginPath = "/Account/Login";

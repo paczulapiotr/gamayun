@@ -5,8 +5,9 @@ namespace Gamayun.Infrastucture.Grid
     public interface IGridConfiguration
     {
         string GridSelector { get; }
+        string DataUrl { get; }
         string SelectHref { get; }
-        bool Selectable { get; } 
+        bool Selectable { get; }
         IEnumerable<GridProperty> GetGridProperties();
     }
 }

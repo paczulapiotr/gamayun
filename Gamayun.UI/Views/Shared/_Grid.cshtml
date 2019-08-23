@@ -21,7 +21,7 @@
 
                     return $.ajax({
                         type: "POST",
-                        url: `https://localhost:44344/student/home/values`,
+                        url: "@Model.DataUrl",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: JSON.stringify(data),

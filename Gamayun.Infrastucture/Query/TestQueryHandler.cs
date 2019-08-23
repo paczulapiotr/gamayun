@@ -1,4 +1,5 @@
-﻿using Gamayun.Infrastucture.Grid;
+﻿using AutoMapper;
+using Gamayun.Infrastucture.Grid;
 
 namespace Gamayun.Infrastucture.Query
 {
@@ -11,9 +12,10 @@ namespace Gamayun.Infrastucture.Query
 
     public class TestQueryHandler : GridQueryHandler<MyClass, TestQueryHandler.Query>
     {
-        public TestQueryHandler(GamayunDbContext dbContext) : base(dbContext)
+        public TestQueryHandler(GamayunDbContext dbContext, MapperConfiguration mapperConfiguration) : base(dbContext, mapperConfiguration)
         {
         }
+
         private static MyClass[] data = new MyClass[]
               {
                   new MyClass { Age = 1, Name = "Janek Moniek" },
