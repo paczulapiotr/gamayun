@@ -2,10 +2,11 @@
 
 namespace Gamayun.Infrastucture.Query
 {
-    public class MyClass
+    public class MyClass : IGridResultModel
     {
         public string Name { get; set; }
         public int Age { get; set; }
+        public int Id => 69;
     }
 
     public class TestQueryHandler : GridQueryHandler<MyClass, TestQueryHandler.Query>

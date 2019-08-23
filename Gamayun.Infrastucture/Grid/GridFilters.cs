@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gamayun.Infrastucture.Grid
 {
-    public class GridFilters<T> where T : class, new()
+    public class GridFilters<T> where T : IGridResultModel, new()
     {
         public T Filters { get; set; } = new T();
         public int PageIndex { get; set; }

@@ -9,6 +9,10 @@ namespace Gamayun.Infrastucture.Grid
     {
         public string GridSelector { get; set; }
 
+        public string SelectHref { get; set; }
+
+        public bool Selectable => !string.IsNullOrWhiteSpace(SelectHref);
+
         public IEnumerable<GridProperty> GetGridProperties()
         {
             var gridProps = new List<GridProperty>();
@@ -16,6 +20,9 @@ namespace Gamayun.Infrastucture.Grid
 
             foreach (var prop in props)
             {
+                if(prop.Name == nameof(IGridResultModel.Id))
+                    continue;
+                
                 var gridProp = new GridProperty();
 
                 var titleAttr = prop.GetCustomAttribute<PropertyTitleAttribute>();

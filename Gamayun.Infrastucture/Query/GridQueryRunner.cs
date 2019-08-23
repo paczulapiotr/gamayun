@@ -13,7 +13,7 @@ namespace Gamayun.Infrastucture.Query
             _serviceProvider = serviceProvider;
         }
         public GridResult<TResult> Run<TResult, TQuery>(GridFilters<TResult> filters, TQuery query) 
-            where TResult : class, new()
+            where TResult : IGridResultModel, new()
             where TQuery : IGridQuery
             => _serviceProvider.GetService<IGridQueryHandler<TResult, TQuery>>().Execute(filters, query);
     }

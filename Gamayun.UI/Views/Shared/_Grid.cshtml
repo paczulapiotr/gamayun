@@ -1,4 +1,5 @@
 ﻿@using Gamayun.Infrastucture.Grid
+@inject IJsonHelper Json
 @model IGridConfiguration
 @{
 
@@ -17,8 +18,7 @@
             controller: {
                 loadData: function (filter) {
                     var data = formatFilter(filter);
-                    console.log(data);
-                    
+
                     return $.ajax({
                         type: "POST",
                         url: `https://localhost:44344/student/home/values`,
@@ -35,7 +35,7 @@
             width: "100%",
 
             heading: true,
-            selecting: true,
+            selecting: @Json.Serialize(Model.Selectable),
             pageLoading: true,
 
             filtering: true,
@@ -48,7 +48,12 @@
             pageButtonCount: 5,
 
             rowClass: function (item, itemIndex) { },
-            rowClick: function (args) { },
+            rowClick: function (args) {
+                @if (Model.Selectable)
+                {
+                    @:window.location.href = "@Model.SelectHref/" + args.item.id;
+                }
+            },
             rowDoubleClick: function (args) { },
 
             noDataContent: "No data available",
@@ -81,5 +86,5 @@
             sortOrder: filter.sortOrder,
             filters: filterObject
         };
-    } 
+    }
 </script>

@@ -5,14 +5,14 @@ using System.Linq;
 namespace Gamayun.Infrastucture.Query
 {
     public interface IGridQueryHandler<TResult, TQuery>
-        where TResult : class, new()
+        where TResult : IGridResultModel, new()
         where TQuery : IGridQuery
     {
         GridResult<TResult> Execute(GridFilters<TResult> filters, TQuery query);
     }
 
     public abstract class GridQueryHandler<TResult, TQuery> : IGridQueryHandler<TResult, TQuery>
-        where TResult : class, new()
+        where TResult : IGridResultModel, new()
         where TQuery : IGridQuery
     {
         protected readonly GamayunDbContext _dbContext;
