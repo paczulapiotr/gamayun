@@ -1,22 +1,20 @@
 ﻿using Gamayun.Identity;
 using Gamayun.Infrastucture.Query;
+using Gamayun.UI.Areas.Admin.Controllers;
 using Gamayun.UI.Models;
+using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 
 namespace Gamayun.UI.Controllers
 {
-    [Area("Admin")]
+    [GamayunArea("Admin")]
     [Authorize(Roles=AppRoles.Admin)]
-    public abstract class AdminController : Controller
+    public abstract class AdminController : GamayunController
     {
-        private readonly GridQueryRunner _queryRunner;
-
-        public AdminController(GridQueryRunner queryRunner)
+        public AdminController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
         {
-            _queryRunner = queryRunner;
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -61,10 +59,38 @@ namespace Gamayun.UI.Controllers
                         {
                             new SideMenuCategory
                             {
-                                CategoryName = "Direct category",
-                                AnchorHref="/test/href",
-                                Icon="",
+                                CategoryName = "Admins",
+                                Icon = Icons.Admin,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.AdminSearch)))
+                                }
+                            },
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Students",
+                                Icon = Icons.Student,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.StudentSearch)))
+                                }
+                            },
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Teachers",
+                                Icon = Icons.Teacher,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherSearch)))
+                                }
                             }
+
                         }
                     }
                 }

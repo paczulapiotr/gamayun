@@ -1,6 +1,7 @@
 ﻿using Gamayun.Identity;
 using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Models;
+using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,15 +9,12 @@ using System.Collections.Generic;
 
 namespace Gamayun.UI.Controllers
 {
-    [Area("Student")]
+    [GamayunArea("Student")]
     [Authorize(Roles = AppRoles.Student)]
-    public abstract class StudentController : Controller
+    public abstract class StudentController : GamayunController
     {
-        private readonly GridQueryRunner _queryRunner;
-
-        public StudentController(GridQueryRunner queryRunner)
+        public StudentController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
         {
-            _queryRunner = queryRunner;
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)

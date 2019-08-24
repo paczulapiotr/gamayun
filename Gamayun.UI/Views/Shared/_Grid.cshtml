@@ -2,13 +2,13 @@
 @inject IJsonHelper Json
 @model IGridConfiguration
 @{
-
+    var gridSelector = Model.GridSelector ?? Guid.NewGuid().ToString();
 }
-<div id="@Model.GridSelector"></div>
+<div id="@gridSelector"></div>
 
 <script>
     $(function () {
-        $("#@Model.GridSelector").jsGrid({
+        $("#@gridSelector").jsGrid({
             fields: [
                 @foreach (var property in @Model.GetGridProperties())
                 {

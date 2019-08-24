@@ -11,8 +11,6 @@ namespace Gamayun.Infrastucture.Grid.ResultModels
         [PropertyTitle("Last Name")]
         public string LastName { get; set; }
         public string Email { get; set; }
-        [PropertyTitle("Full Name Lenght")]
-        public int? FullNameLenght { get; set; }
     }
 
     public class UserRMProfile : Profile
@@ -21,21 +19,18 @@ namespace Gamayun.Infrastucture.Grid.ResultModels
         {
             CreateMap<Student, UserRM>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dest => dest.FullNameLenght, opt => opt.MapFrom(src => src.AppUser.FullName.Length))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.AppUser.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.AppUser.LastName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.AppUser.Email));
 
             CreateMap<Admin, UserRM>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dest => dest.FullNameLenght, opt => opt.MapFrom(src => src.AppUser.FullName.Length))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.AppUser.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.AppUser.LastName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.AppUser.Email));
 
             CreateMap<Teacher, UserRM>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dest => dest.FullNameLenght, opt => opt.MapFrom(src => src.AppUser.FullName.Length))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.AppUser.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.AppUser.LastName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.AppUser.Email));

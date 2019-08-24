@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using Gamayun.Infrastucture.Query;
 using Gamayun.Infrastucture.Mapper;
 using AutoMapper;
+using Gamayun.Infrastucture.Query.Admin;
+using Gamayun.Infrastucture.Grid.ResultModels;
+using Gamayun.UI.Utilities;
 
 namespace Gamayun.UI
 {
@@ -40,9 +43,14 @@ namespace Gamayun.UI
                 .AddDefaultTokenProviders()
                 .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>();
             
+            services.AddSingleton<ISettings, Settings>();
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
             services.AddScoped<IGridQueryRunner, GridQueryRunner>();
-            
+            services.AddTransient<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddTransient<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
+            services.AddTransient<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
+
+
             var autoMapperConfig = AutomapperService.Initialize();
             services.AddSingleton<MapperConfiguration>(autoMapperConfig);
             

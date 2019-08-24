@@ -5,7 +5,7 @@ using System;
 
 namespace Gamayun.Infrastucture.Grid
 {
-    public class GridConfiguration<T> : IGridConfiguration where T : class, new()
+    public class GridConfiguration<TResult> : IGridConfiguration where TResult : IGridResultModel
     {
         public string GridSelector { get; set; }
 
@@ -18,7 +18,7 @@ namespace Gamayun.Infrastucture.Grid
         public IEnumerable<GridProperty> GetGridProperties()
         {
             var gridProps = new List<GridProperty>();
-            var props = typeof(T).GetProperties();
+            var props = typeof(TResult).GetProperties();
 
             foreach (var prop in props)
             {

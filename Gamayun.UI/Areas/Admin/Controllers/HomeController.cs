@@ -1,12 +1,13 @@
 ﻿using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Controllers;
+using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gamayun.UI.Areas.Admin.Controllers
 {
     public class HomeController : AdminController
     {
-        public HomeController(GridQueryRunner queryRunner) : base(queryRunner)
+        public HomeController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
         {
         }
 
