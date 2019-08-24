@@ -42,7 +42,6 @@ namespace Gamayun.UI
             
             services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
             services.AddScoped<IGridQueryRunner, GridQueryRunner>();
-            services.AddTransient<IGridQueryHandler<MyClass, TestQueryHandler.Query>, TestQueryHandler>();
             
             var autoMapperConfig = AutomapperService.Initialize();
             services.AddSingleton<MapperConfiguration>(autoMapperConfig);
