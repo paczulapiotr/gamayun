@@ -23,6 +23,13 @@ namespace Gamayun.UI.Controllers
             _settings = settings;
         }
 
+        protected ActionResult ErrorResult()
+        {
+            return RedirectToAction(nameof(Error));
+        }
+
+        public ViewResult Error() => View("_Error");
+
         protected string GetControllerName(Type type)
         {
             return type.Name.Replace(nameof(Controller), "");
