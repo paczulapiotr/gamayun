@@ -15,6 +15,8 @@ using AutoMapper;
 using Gamayun.Infrastucture.Query.Admin;
 using Gamayun.Infrastucture.Grid.ResultModels;
 using Gamayun.UI.Utilities;
+using Gamayun.Infrastucture.Utilities;
+using Gamayun.Infrastucture.Command.Admin;
 
 namespace Gamayun.UI
 {
@@ -44,11 +46,16 @@ namespace Gamayun.UI
                 .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>();
             
             services.AddSingleton<ISettings, Settings>();
-            services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
+            services.AddScoped<ICommandRunner, CommandRunner>();
             services.AddScoped<IGridQueryRunner, GridQueryRunner>();
-            services.AddTransient<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
-            services.AddTransient<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
-            services.AddTransient<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.AdminCommand>, CreateUserCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.StudentCommand>, CreateUserCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.TeacherCommand>, CreateUserCommandHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
 
 
             var autoMapperConfig = AutomapperService.Initialize();
@@ -70,7 +77,7 @@ namespace Gamayun.UI
             {
                 using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    IdentitySeeder.Seed(scope.ServiceProvider);
+                    DataSeeder.Seed(scope.ServiceProvider);
                 }
             }
             else

@@ -1,4 +1,5 @@
-﻿using Gamayun.Infrastucture.Query;
+﻿using Gamayun.Infrastucture.Command;
+using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,14 +9,17 @@ namespace Gamayun.UI.Controllers
 {
     public class GamayunController : Controller
     {
-        protected readonly IGridQueryRunner _queryRunner;
+        protected readonly ICommandRunner _commandRunner;
+        protected readonly IGridQueryRunner _gridQueryRunner;
         protected readonly ISettings _settings;
 
         public GamayunController(
-            IGridQueryRunner queryRunner, 
+            ICommandRunner commandRunner,
+            IGridQueryRunner gridQueryRunner, 
             ISettings settings)
         {
-            _queryRunner = queryRunner;
+            _commandRunner = commandRunner;
+            _gridQueryRunner = gridQueryRunner;
             _settings = settings;
         }
 

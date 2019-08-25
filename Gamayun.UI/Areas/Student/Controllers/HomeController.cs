@@ -1,4 +1,5 @@
 ﻿
+using Gamayun.Infrastucture.Command;
 using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Controllers;
 using Gamayun.UI.Utilities;
@@ -8,7 +9,11 @@ namespace Gamayun.UI.Areas.Student.Controllers
 {
     public class HomeController : StudentController
     {
-        public HomeController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
+        public HomeController(
+            ICommandRunner commandRunner, 
+            IGridQueryRunner gridQueryRunner, 
+            ISettings settings) 
+            : base(commandRunner, gridQueryRunner, settings)
         {
         }
 

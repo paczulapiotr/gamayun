@@ -1,4 +1,5 @@
 ﻿using Gamayun.Identity;
+using Gamayun.Infrastucture.Command;
 using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Areas.Admin.Controllers;
 using Gamayun.UI.Models;
@@ -13,7 +14,12 @@ namespace Gamayun.UI.Controllers
     [Authorize(Roles=AppRoles.Admin)]
     public abstract class AdminController : GamayunController
     {
-        public AdminController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
+
+        public AdminController(
+            ICommandRunner commandRunner, 
+            IGridQueryRunner gridQueryRunner, 
+            ISettings settings) 
+            : base(commandRunner, gridQueryRunner, settings)
         {
         }
 
@@ -65,7 +71,10 @@ namespace Gamayun.UI.Controllers
                                 {
                                     new SideMenuCategoryOption(
                                         "Search Page", 
-                                        this.GetActionUrl<UserController>(nameof(UserController.AdminSearch)))
+                                        this.GetActionUrl<UserController>(nameof(UserController.AdminSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.AdminCreate))),
                                 }
                             },
                             new SideMenuCategory
@@ -76,7 +85,11 @@ namespace Gamayun.UI.Controllers
                                 {
                                     new SideMenuCategoryOption(
                                         "Search Page", 
-                                        this.GetActionUrl<UserController>(nameof(UserController.StudentSearch)))
+                                        this.GetActionUrl<UserController>(nameof(UserController.StudentSearch))),
+                                    new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.StudentCreate))),
+
                                 }
                             },
                             new SideMenuCategory
@@ -87,7 +100,10 @@ namespace Gamayun.UI.Controllers
                                 {
                                     new SideMenuCategoryOption(
                                         "Search Page", 
-                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherSearch)))
+                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherCreate))),
                                 }
                             }
 

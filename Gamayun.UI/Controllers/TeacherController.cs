@@ -1,4 +1,5 @@
 ﻿using Gamayun.Identity;
+using Gamayun.Infrastucture.Command;
 using Gamayun.Infrastucture.Query;
 using Gamayun.UI.Models;
 using Gamayun.UI.Utilities;
@@ -13,7 +14,11 @@ namespace Gamayun.UI.Controllers
     [Authorize(Roles = AppRoles.Teacher)]
     public abstract class TeacherController : GamayunController
     {
-        public TeacherController(IGridQueryRunner queryRunner, ISettings settings) : base(queryRunner, settings)
+        public TeacherController(
+            ICommandRunner commandRunner, 
+            IGridQueryRunner gridQueryRunner, 
+            ISettings settings) 
+            : base(commandRunner, gridQueryRunner, settings)
         {
         }
 

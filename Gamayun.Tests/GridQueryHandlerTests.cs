@@ -15,7 +15,7 @@ namespace Tests
 {
 
     [TestFixture]
-    public class QueryHandlerTests
+    public class GridQueryHandlerTests
     {
         private GamayunDbContext _dbContext;
         private TeachersQueryHandler _queryHandler;

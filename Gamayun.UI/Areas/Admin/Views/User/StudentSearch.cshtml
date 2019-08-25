@@ -1,2 +1,5 @@
 ﻿@model IGridConfiguration
+
+@await Html.PartialAsync("_PageHeader", "Student Search Page")
+
 @await Html.PartialAsync("_Grid", Model)

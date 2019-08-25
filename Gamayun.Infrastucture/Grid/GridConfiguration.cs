@@ -29,7 +29,7 @@ namespace Gamayun.Infrastucture.Grid
 
                 var titleAttr = prop.GetCustomAttribute<PropertyTitleAttribute>();
 
-                gridProp.Name = prop.Name.ToLower();
+                gridProp.Name = Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1); // to camelcase
                 gridProp.Title = (titleAttr != null)
                     ? titleAttr.Title
                     : prop.Name;
