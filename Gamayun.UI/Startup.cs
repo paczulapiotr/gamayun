@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gamayun.Identity;
+﻿using Gamayun.Identity;
 using Gamayun.Infrastucture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Design;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Gamayun.Infrastucture.Command;
 using Microsoft.AspNetCore.Identity;
+using Gamayun.Infrastucture.Query;
+using Gamayun.Infrastucture.Mapper;
+using AutoMapper;
+using Gamayun.Infrastucture.Query.Admin;
+using Gamayun.Infrastucture.Grid.ResultModels;
+using Gamayun.UI.Utilities;
+using Gamayun.Infrastucture.Utilities;
+using Gamayun.Infrastucture.Command.Admin;
 
 namespace Gamayun.UI
 {
@@ -43,8 +45,22 @@ namespace Gamayun.UI
                 .AddDefaultTokenProviders()
                 .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>();
             
-            services.AddSingleton<ICommandHandlerResolver,CommandHandlerResolver>();
+            services.AddSingleton<ISettings, Settings>();
+            services.AddScoped<ICommandRunner, CommandRunner>();
+            services.AddScoped<IGridQueryRunner, GridQueryRunner>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.AdminCommand>, CreateUserCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.StudentCommand>, CreateUserCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommandHandler.TeacherCommand>, CreateUserCommandHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
 
+
+            var autoMapperConfig = AutomapperService.Initialize();
+            services.AddSingleton<MapperConfiguration>(autoMapperConfig);
+            
             services.ConfigureApplicationCookie(opt =>
             {
                 opt.LoginPath = "/Account/Login";
@@ -61,7 +77,7 @@ namespace Gamayun.UI
             {
                 using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    IdentitySeeder.Seed(scope.ServiceProvider);
+                    DataSeeder.Seed(scope.ServiceProvider);
                 }
             }
             else

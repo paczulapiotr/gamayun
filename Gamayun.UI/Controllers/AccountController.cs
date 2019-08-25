@@ -1,4 +1,6 @@
 ﻿using Gamayun.Identity;
+using Gamayun.Infrastucture;
+using Gamayun.Infrastucture.Entities;
 using Gamayun.UI.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,15 +13,18 @@ namespace Gamayun.UI.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
+        private readonly GamayunDbContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
 
         public AccountController(
+            GamayunDbContext dbContext,
             UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager,
             SignInManager<AppUser> signInManager)
         {
+            _dbContext = dbContext;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -37,10 +42,13 @@ namespace Gamayun.UI.Controllers
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.GetUserAsync(User);
-                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-                if (role != null)
+                if (user != null)
                 {
-                    return Redirect(role);
+                    var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                    if (role != null)
+                    {
+                        return Redirect(role);
+                    }
                 }
                 await _signInManager.SignOutAsync();
             }
@@ -139,6 +147,14 @@ namespace Gamayun.UI.Controllers
                 ViewBag.ErrorMessage = "Cannot create user with given credentials";
                 return View();
             }
+
+            var student = new Student
+            {
+                AppUser = user
+            };
+
+            _dbContext.Students.Add(student);
+            _dbContext.SaveChanges();
 
             ViewBag.Message = "Registration was succesfull";
             return View(nameof(Login));

@@ -1,0 +1,91 @@
+﻿@using Gamayun.Infrastucture.Grid
+@inject IJsonHelper Json
+@model IGridConfiguration
+@{
+    var gridSelector = Model.GridSelector ?? Guid.NewGuid().ToString();
+}
+<div id="@gridSelector"></div>
+
+<script>
+    $(function () {
+        $("#@gridSelector").jsGrid({
+            fields: [
+                @foreach (var property in @Model.GetGridProperties())
+                {
+                    @:{ name: "@property.Name", type: "@property.Type", title: "@property.Title"},
+                }
+            ],
+            controller: {
+                loadData: function (filter) {
+                    var data = formatFilter(filter);
+
+                    return $.ajax({
+                        type: "POST",
+                        url: "@Model.DataUrl",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify(data),
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    });
+                },
+            },
+            height: "auto",
+            width: "100%",
+
+            heading: true,
+            selecting: @Json.Serialize(Model.Selectable),
+            pageLoading: true,
+
+            filtering: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageSize: 15,
+            pageButtonCount: 5,
+
+            rowClass: function (item, itemIndex) { },
+            rowClick: function (args) {
+                @if (Model.Selectable)
+                {
+                    @:window.location.href = "@Model.SelectHref/" + args.item.id;
+                }
+            },
+            rowDoubleClick: function (args) { },
+
+            noDataContent: "No data available",
+            confirmDeleting: true,
+            deleteConfirm: "Are you sure?",
+
+            invalidNotify: function (args) { },
+            invalidMessage: "Invalid data entered!",
+
+            loadIndication: true,
+            loadIndicationDelay: 500,
+            loadMessage: "Please, wait...",
+            loadShading: true,
+            updateOnResize: true,
+
+        });
+        $("#@gridSelector .jsgrid-cell input").addClass("form-control");
+    });
+
+    var formatFilter = function (filter) {
+        var filterObject = jQuery.extend({}, filter);
+        delete filterObject.pageIndex;
+        delete filterObject.pageSize;
+        delete filterObject.sortField;
+        delete filterObject.sortOrder;
+
+        return {
+            pageIndex: filter.pageIndex,
+            pageSize: filter.pageSize,
+            sortField: filter.sortField,
+            sortOrder: filter.sortOrder,
+            filters: filterObject
+        };
+    }
+</script>

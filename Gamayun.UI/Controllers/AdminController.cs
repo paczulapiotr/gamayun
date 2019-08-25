@@ -1,16 +1,116 @@
 ﻿using Gamayun.Identity;
+using Gamayun.Infrastucture.Command;
+using Gamayun.Infrastucture.Query;
+using Gamayun.UI.Areas.Admin.Controllers;
+using Gamayun.UI.Models;
+using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Collections.Generic;
 
 namespace Gamayun.UI.Controllers
 {
-    [Area("Admin")]
+    [GamayunArea("Admin")]
     [Authorize(Roles=AppRoles.Admin)]
-    public class AdminController : Controller
+    public abstract class AdminController : GamayunController
     {
-        public AdminController()
-        {
 
+        public AdminController(
+            ICommandRunner commandRunner, 
+            IGridQueryRunner gridQueryRunner, 
+            ISettings settings) 
+            : base(commandRunner, gridQueryRunner, settings)
+        {
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            ViewBag.SideMenuTree = new SideMenuTree
+            {
+                Leaves = new List<SideMenuLeaf>()
+                {
+                    new SideMenuLeaf
+                    {
+                        HeaderName = "Main menu",
+                        Categories = new List<SideMenuCategory>
+                        {
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Majors",
+                                Options = new List<SideMenuCategoryOption>()
+                                {
+                                    new SideMenuCategoryOption
+                                    {
+                                        OptionName = "Search",
+                                        AnchorHref = "/majors/search"
+                                    },
+                                    new SideMenuCategoryOption
+                                    {
+                                        OptionName = "Create new",
+                                        AnchorHref = "/majors/create"
+                                    }
+                                }
+                            },
+                            new SideMenuCategory
+                            {
+                                AnchorHref = "#",
+                                CategoryName = "Direct link bro"
+                            }
+                        }
+                    },
+                    new SideMenuLeaf
+                    {
+                        HeaderName = "Users",
+                        Categories = new List<SideMenuCategory>
+                        {
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Admins",
+                                Icon = Icons.Admin,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.AdminSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.AdminCreate))),
+                                }
+                            },
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Students",
+                                Icon = Icons.Student,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.StudentSearch))),
+                                    new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.StudentCreate))),
+
+                                }
+                            },
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Teachers",
+                                Icon = Icons.Teacher,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page", 
+                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<UserController>(nameof(UserController.TeacherCreate))),
+                                }
+                            }
+
+                        }
+                    }
+                }
+            };
         }
     }
 }

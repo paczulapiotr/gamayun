@@ -1,0 +1,60 @@
+﻿@using Gamayun.Infrastucture.Command.Admin
+@model CreateUserCommandHandler.TeacherCommand
+@{
+    var errors = ViewBag.Errors ?? Array.Empty<string>();
+}
+
+@await Html.PartialAsync("_PageHeader", "Teacher Create Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        @foreach (var error in errors)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>@error</strong>
+            </div>
+        }
+        <form asp-area="Admin" asp-controller="User" asp-action="CreateTeacher">
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Username">Username</label>
+                    <input asp-for="Username" minlength="5" class="form-control" placeholder="Username" required autocomplete="new-username">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" required>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="RepeatEmail">Repeat Email</label>
+                    <input asp-for="RepeatEmail" type="email" class="form-control" placeholder="Repeat Email" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" minlength="5" class="form-control" placeholder="Password" required autocomplete="new-password">
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="RepeatPassword">Repeat Password</label>
+                    <input asp-for="RepeatPassword" type="password" minlength="5" class="form-control" placeholder="Repeat Password" required>
+                </div>
+            </div>
+            <div class="container-controls">
+                <button class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
