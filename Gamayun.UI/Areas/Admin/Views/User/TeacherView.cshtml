@@ -1,0 +1,39 @@
+﻿@model UserVm
+@await Html.PartialAsync("_PageHeader", "Teacher View Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        <p><strong>Username:</strong>&nbsp;@Model.Username</p>
+        <p><strong>First Name:</strong>&nbsp;@Model.FirstName</p>
+        <p><strong>Last Name:</strong>&nbsp;@Model.LastName</p>
+        <p><strong>Email:</strong>&nbsp;@Model.Email</p>
+        @if (@Model.IsObsolete)
+        {
+            <div class="alert alert-danger">
+                User is obsoleted
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success">
+                User is active
+            </div>
+        }
+        <div class="container-controls">
+            <a asp-action="TeacherEdit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            @if (@Model.IsObsolete)
+            {
+                <form asp-action="TeacherRestore" asp-route-id="@Model.Id" method="post">
+                    <button class="btn btn-success">Restore</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="TeacherObsolete" asp-route-id="@Model.Id" method="post">
+                    <button class="btn btn-danger">Obsolete</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

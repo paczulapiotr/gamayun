@@ -65,12 +65,19 @@ namespace Gamayun.UI.Controllers
                 return View();
             }
 
+            if (user.IsObsolete)
+            {
+                ViewBag.ErrorMessage = "Invalid login credentials";
+                return View();
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, vm.Password, false);
             if(!result.Succeeded)
             {
                 ViewBag.ErrorMessage = "Invalid login credentials";
                 return View();
             }
+
             await _signInManager.SignInAsync(user, vm.RememberMe);
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
             
@@ -122,6 +129,7 @@ namespace Gamayun.UI.Controllers
                 ViewBag.ErrorMessage = "Given login is already in use";
                 return View();
             }
+
             var user = new AppUser
             {
                 FirstName = vm.FirstName,

@@ -7,6 +7,7 @@ using Gamayun.Infrastucture.Grid;
 using Gamayun.Infrastucture.Grid.ResultModels;
 using Gamayun.Infrastucture.Query;
 using Gamayun.Infrastucture.Query.Admin;
+using Gamayun.UI.Areas.Admin.Models;
 using Gamayun.UI.Controllers;
 using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,10 @@ namespace Gamayun.UI.Areas.Admin.Controllers
         private readonly GamayunDbContext _dbContext;
 
         public UserController(
-            ICommandRunner commandRunner, 
-            IGridQueryRunner gridQueryRunner, 
+            ICommandRunner commandRunner,
+            IGridQueryRunner gridQueryRunner,
             ISettings settings,
-            GamayunDbContext dbContext) 
+            GamayunDbContext dbContext)
             : base(commandRunner, gridQueryRunner, settings)
         {
             _dbContext = dbContext;
@@ -32,6 +33,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
              => View(new GridConfiguration<UserRM>
              {
                  DataUrl = GetActionUrl(nameof(AdminSearchQuery)),
+                 SelectHref = GetActionUrl(nameof(AdminView)),
              });
 
         [HttpPost]
@@ -41,7 +43,8 @@ namespace Gamayun.UI.Areas.Admin.Controllers
         public ViewResult TeacherSearch()
             => View(new GridConfiguration<UserRM>
             {
-                DataUrl = GetActionUrl(nameof(TeacherSearchQuery))
+                DataUrl = GetActionUrl(nameof(TeacherSearchQuery)),
+                SelectHref = GetActionUrl(nameof(TeacherView))
             });
 
         [HttpPost]
@@ -52,19 +55,38 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             => View(new GridConfiguration<UserRM>
             {
                 DataUrl = GetActionUrl(nameof(StudentSearchQuery)),
+                SelectHref = GetActionUrl(nameof(TeacherView))
             });
 
         [HttpPost]
         public JsonResult StudentSearchQuery([FromBody]GridFilters<UserRM> filter)
            => Json(_gridQueryRunner.Run(filter, new StudentsQueryHandler.Query()));
 
-        public ViewResult StudentView() => View();
+        public ActionResult StudentView(int id)
+        {
+            var vm = _dbContext.Students.Include(x => x.AppUser).Select(x =>
+            new UserVm
+            {
+                Id = x.ID,
+                Username = x.AppUser.UserName,
+                FirstName = x.AppUser.FirstName,
+                LastName = x.AppUser.LastName,
+                Email = x.AppUser.Email,
+                IsObsolete = x.AppUser.IsObsolete,
+            }).FirstOrDefault(x => x.Id == id);
+            if (vm == null)
+            {
+                return ErrorResult();
+            }
+            return View(vm);
+        }
         public ViewResult StudentCreate() => View();
         public ActionResult StudentEdit(int id)
         {
             var vm = _dbContext.Students.Include(x => x.AppUser).Select(x =>
-            new EditUserCommandHandler.StudentCommand {
-                Id= x.ID,
+            new EditUserCommandHandler.StudentCommand
+            {
+                Id = x.ID,
                 Username = x.AppUser.UserName,
                 FirstName = x.AppUser.FirstName,
                 LastName = x.AppUser.LastName,
@@ -72,7 +94,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             }).FirstOrDefault(x => x.Id == id);
             if (vm == null)
             {
-                return RedirectToAction(nameof(Error));
+                return ErrorResult();
             }
             return View(vm);
         }
@@ -103,22 +125,39 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             return View(command.Id);
         }
 
-        public ViewResult AdminView() => View();
+        public ActionResult AdminView(int id)
+        {
+            var vm = _dbContext.Admins.Include(x => x.AppUser).Select(x =>
+            new UserVm
+            {
+                Id = x.ID,
+                Username = x.AppUser.UserName,
+                FirstName = x.AppUser.FirstName,
+                LastName = x.AppUser.LastName,
+                Email = x.AppUser.Email,
+                IsObsolete = x.AppUser.IsObsolete,
+            }).FirstOrDefault(x => x.Id == id);
+            if (vm == null)
+            {
+                return ErrorResult();
+            }
+            return View(vm);
+        }
         public ViewResult AdminCreate() => View();
         public ActionResult AdminEdit(int id)
         {
             var vm = _dbContext.Admins.Include(x => x.AppUser).Select(x =>
-          new EditUserCommandHandler.StudentCommand
-          {
-              Id = x.ID,
-              Username = x.AppUser.UserName,
-              FirstName = x.AppUser.FirstName,
-              LastName = x.AppUser.LastName,
-              Email = x.AppUser.Email,
-          }).FirstOrDefault(x => x.Id == id);
+            new EditUserCommandHandler.AdminCommand
+            {
+                Id = x.ID,
+                Username = x.AppUser.UserName,
+                FirstName = x.AppUser.FirstName,
+                LastName = x.AppUser.LastName,
+                Email = x.AppUser.Email,
+            }).FirstOrDefault(x => x.Id == id);
             if (vm == null)
             {
-                return RedirectToAction(nameof(Error));
+                return ErrorResult();
             }
             return View(vm);
         }
@@ -151,22 +190,39 @@ namespace Gamayun.UI.Areas.Admin.Controllers
 
         }
 
-        public ViewResult TeacherView() => View();
+        public ActionResult TeacherView(int id)
+        {
+            var vm = _dbContext.Teachers.Include(x => x.AppUser).Select(x =>
+            new UserVm
+            {
+                Id = x.ID,
+                Username = x.AppUser.UserName,
+                FirstName = x.AppUser.FirstName,
+                LastName = x.AppUser.LastName,
+                Email = x.AppUser.Email,
+                IsObsolete = x.AppUser.IsObsolete,
+            }).FirstOrDefault(x => x.Id == id);
+            if (vm == null)
+            {
+                return ErrorResult();
+            }
+            return View(vm);
+        }
         public ViewResult TeacherCreate() => View();
         public ActionResult TeacherEdit(int id)
         {
             var vm = _dbContext.Teachers.Include(x => x.AppUser).Select(x =>
-          new EditUserCommandHandler.StudentCommand
-          {
-              Id = x.ID,
-              Username = x.AppUser.UserName,
-              FirstName = x.AppUser.FirstName,
-              LastName = x.AppUser.LastName,
-              Email = x.AppUser.Email,
-          }).FirstOrDefault(x => x.Id == id);
+            new EditUserCommandHandler.TeacherCommand
+            {
+                Id = x.ID,
+                Username = x.AppUser.UserName,
+                FirstName = x.AppUser.FirstName,
+                LastName = x.AppUser.LastName,
+                Email = x.AppUser.Email,
+            }).FirstOrDefault(x => x.Id == id);
             if (vm == null)
             {
-                return RedirectToAction(nameof(Error));
+                return ErrorResult();
             }
             return View(vm);
         }
@@ -196,6 +252,90 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             ViewBag.Errors = result.Errors;
             return View(command.Id);
 
+        }
+
+        [HttpPost]
+        public ActionResult AdminObsolete(int id)
+        {
+            var user = _dbContext.Admins.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if(user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = true;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
+        }
+        
+        [HttpPost]
+        public ActionResult AdminRestore(int id)
+        {
+            var user = _dbContext.Admins.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if (user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = false;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
+        }
+        
+        [HttpPost]
+        public ActionResult TeacherObsolete(int id)
+        {
+            var user = _dbContext.Teachers.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if (user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = true;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
+        }
+
+        [HttpPost]
+        public ActionResult TeacherRestore(int id)
+        {
+            var user = _dbContext.Teachers.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if (user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = false;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
+        }
+        
+        [HttpPost]
+        public ActionResult StudentObsolete(int id)
+        {
+            var user = _dbContext.Students.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if (user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = true;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
+        }
+
+        [HttpPost]
+        public ActionResult StudentRestore(int id)
+        {
+            var user = _dbContext.Students.Include(x => x.AppUser).FirstOrDefault(x => x.ID == id);
+            if (user == null)
+            {
+                return ErrorResult();
+            }
+            user.AppUser.IsObsolete = false;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(AdminView), new { id });
         }
 
     }

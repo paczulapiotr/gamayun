@@ -22,6 +22,12 @@ namespace Gamayun.UI.Controllers
             _gridQueryRunner = gridQueryRunner;
             _settings = settings;
         }
+
+        protected ActionResult ErrorResult()
+        {
+            return RedirectToAction(nameof(Error));
+        }
+
         public ViewResult Error() => View("_Error");
 
         protected string GetControllerName(Type type)

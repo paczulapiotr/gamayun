@@ -5,5 +5,9 @@
 .container-controls {
     display: flex;
     justify-content: flex-end;
-    margin-top: 2em;
+    transform: translate(0, 2em);
+}
+
+.container-controls > * {
+    margin-left: 1em;
 }

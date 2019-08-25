@@ -28,7 +28,7 @@ namespace Gamayun.Infrastucture.Command.Admin
         {
             try
             {
-                return EditUser(_dbContext.Students.Include(x=>x.AppUser), command).Result;
+                return EditUser(_dbContext.Teachers.Include(x=>x.AppUser), command).Result;
             }
             catch
             {
@@ -52,7 +52,7 @@ namespace Gamayun.Infrastucture.Command.Admin
         {
             try
             {
-                return EditUser(_dbContext.Students.Include(x => x.AppUser), command).Result;
+                return EditUser(_dbContext.Admins.Include(x => x.AppUser), command).Result;
             }
             catch
             {
@@ -81,14 +81,15 @@ namespace Gamayun.Infrastucture.Command.Admin
                 return CommandResult.Failed("Email is already taken");
             }
 
-            var appUser = user.AppUser;
+            var appUser = await _userManager.FindByIdAsync(user.AppUserID);
+
             appUser.Email = command.Email;
             appUser.FirstName = command.FirstName;
             appUser.LastName= command.LastName;
+            appUser.UserName = command.Username;
+
             var result = await _userManager.UpdateAsync(appUser);
-
-
-            if (!result.Succeeded)
+            if(!result.Succeeded)
             {
                 return CommandResult.Failed();
             }

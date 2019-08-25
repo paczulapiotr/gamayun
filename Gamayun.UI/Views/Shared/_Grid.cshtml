@@ -51,7 +51,7 @@
             rowClick: function (args) {
                 @if (Model.Selectable)
                 {
-                    @:window.location.href = "@Model.SelectHref/" + args.item.id;
+                    @:window.location.href = "@Model.SelectHref/?id=" + args.item.id;
                 }
             },
             rowDoubleClick: function (args) { },
