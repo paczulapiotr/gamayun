@@ -1,0 +1,45 @@
+﻿@using Gamayun.Infrastucture.Command.Admin
+@model EditUserCommandHandler.StudentCommand
+@{
+    var errors = ViewBag.Errors ?? Array.Empty<string>();
+}
+
+@await Html.PartialAsync("_PageHeader", "Student Edit Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        @foreach (var error in errors)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>@error</strong>
+            </div>
+        }
+        <form asp-area="Admin" asp-controller="User" asp-action="EditStudent">
+            <input hidden asp-for="Id" />
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Username">Username</label>
+                    <input asp-for="Username" minlength="5" class="form-control" placeholder="Username" required autocomplete="edit-username">
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" required>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" required>
+                </div>
+            </div>
+            <div class="container-controls">
+                <button class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
