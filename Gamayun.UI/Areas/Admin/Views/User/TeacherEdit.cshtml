@@ -1,6 +1,7 @@
 ﻿@using Gamayun.Infrastucture.Command.Admin
 @model EditUserCommandHandler.TeacherCommand
 @{
+    ViewData["Title"] = "Edit Teacher";
     var errors = ViewBag.Errors ?? Array.Empty<string>();
 }
 
@@ -15,7 +16,7 @@
                 <strong>@error</strong>
             </div>
         }
-        <form asp-area="Admin" asp-controller="User" asp-action="EditTeacher">
+        <form asp-area="Admin" asp-controller="User" asp-action="TeacherEdit">
             <input hidden asp-for="Id" />
             <div class="row">
                 <div class="col-lg-6 form-group">

@@ -29,6 +29,26 @@ namespace Gamayun.UI.Controllers
             {
                 Leaves = new List<SideMenuLeaf>()
                 {
+                    new SideMenuLeaf { 
+                        HeaderName = "Domain",
+                        Categories = new List<SideMenuCategory>
+                        {
+                            new SideMenuCategory
+                            {
+                                CategoryName = "Semesters",
+                                Icon = Icons.Admin,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page",
+                                        this.GetActionUrl<SemesterController>(nameof(SemesterController.SemesterSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<SemesterController>(nameof(SemesterController.SemesterCreate))),
+                                }
+                            },
+                        }
+                    },
                     new SideMenuLeaf
                     {
                         HeaderName = "Users",

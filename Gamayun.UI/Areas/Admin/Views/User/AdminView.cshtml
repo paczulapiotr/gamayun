@@ -1,4 +1,7 @@
 ﻿@model UserVm
+@{ 
+    ViewData["Title"] = "View Admin";
+}
 @await Html.PartialAsync("_PageHeader", "Admin View Page")
 
 <hr />
@@ -14,12 +17,7 @@
                 User is obsoleted
             </div>
         }
-        else
-        {
-            <div class="alert alert-success">
-                User is active
-            </div>
-        }
+       
         <div class="container-controls">
             <a asp-action="AdminEdit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             @if (@Model.IsObsolete)

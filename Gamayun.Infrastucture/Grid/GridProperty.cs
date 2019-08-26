@@ -10,5 +10,6 @@ namespace Gamayun.Infrastucture.Grid
         public string Name { get; set; }
         public string Type { get; set; }
         public string Title { get; set; }
+        public bool Filter { get; set; }
     }
 }

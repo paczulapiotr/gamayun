@@ -55,7 +55,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             => View(new GridConfiguration<UserRM>
             {
                 DataUrl = GetActionUrl(nameof(StudentSearchQuery)),
-                SelectHref = GetActionUrl(nameof(TeacherView))
+                SelectHref = GetActionUrl(nameof(StudentView))
             });
 
         [HttpPost]
@@ -293,7 +293,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             user.AppUser.IsObsolete = true;
             _dbContext.SaveChanges();
 
-            return RedirectToAction(nameof(AdminView), new { id });
+            return RedirectToAction(nameof(TeacherView), new { id });
         }
 
         [HttpPost]
@@ -307,7 +307,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             user.AppUser.IsObsolete = false;
             _dbContext.SaveChanges();
 
-            return RedirectToAction(nameof(AdminView), new { id });
+            return RedirectToAction(nameof(TeacherView), new { id });
         }
         
         [HttpPost]
@@ -321,7 +321,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             user.AppUser.IsObsolete = true;
             _dbContext.SaveChanges();
 
-            return RedirectToAction(nameof(AdminView), new { id });
+            return RedirectToAction(nameof(StudentView), new { id });
         }
 
         [HttpPost]
@@ -335,7 +335,7 @@ namespace Gamayun.UI.Areas.Admin.Controllers
             user.AppUser.IsObsolete = false;
             _dbContext.SaveChanges();
 
-            return RedirectToAction(nameof(AdminView), new { id });
+            return RedirectToAction(nameof(StudentView), new { id });
         }
 
     }

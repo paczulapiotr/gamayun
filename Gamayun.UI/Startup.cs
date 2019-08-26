@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Gamayun.Infrastucture.Command;
 using Microsoft.AspNetCore.Identity;
 using Gamayun.Infrastucture.Query;
-using Gamayun.Infrastucture.Mapper;
 using AutoMapper;
 using Gamayun.Infrastucture.Query.Admin;
 using Gamayun.Infrastucture.Grid.ResultModels;
@@ -54,15 +53,16 @@ namespace Gamayun.UI
             services.AddScoped<ICommandHandler<EditUserCommandHandler.AdminCommand>, EditUserCommandHandler>();
             services.AddScoped<ICommandHandler<EditUserCommandHandler.StudentCommand>, EditUserCommandHandler>();
             services.AddScoped<ICommandHandler<EditUserCommandHandler.TeacherCommand>, EditUserCommandHandler>();
-            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
-            services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
+            services.AddScoped<ICommandHandler<CreateSemesterCommandHandler.Command>, CreateSemesterCommandHandler>();
+            services.AddScoped<ICommandHandler<EditSemesterCommandHandler.Command>, EditSemesterCommandHandler>();
+            
             services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
-
+            services.AddScoped<IGridQueryHandler<SemesterRM, SemestersQueryHandler.Query>, SemestersQueryHandler>();
 
             var autoMapperConfig = AutomapperService.Initialize();
-            services.AddSingleton<MapperConfiguration>(autoMapperConfig);
+            services.AddSingleton(autoMapperConfig);
             
             services.ConfigureApplicationCookie(opt =>
             {

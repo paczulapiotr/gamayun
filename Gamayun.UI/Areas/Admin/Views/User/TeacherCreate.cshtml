@@ -1,5 +1,8 @@
 ﻿@using Gamayun.Infrastucture.Command.Admin
 @model CreateUserCommandHandler.TeacherCommand
+@{ 
+    ViewData["Title"] = "Create Teacher";
+}
 @{
     var errors = ViewBag.Errors ?? Array.Empty<string>();
 }
@@ -15,7 +18,7 @@
                 <strong>@error</strong>
             </div>
         }
-        <form asp-area="Admin" asp-controller="User" asp-action="CreateTeacher">
+        <form asp-area="Admin" asp-controller="User" asp-action="TeacherCreate">
             <div class="row">
                 <div class="col-lg-6 form-group">
                     <label asp-for="Username">Username</label>

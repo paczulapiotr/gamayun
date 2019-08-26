@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Gamayun.Infrastucture.Mapper
+namespace Gamayun.UI.Utilities
 {
     public static class AutomapperService
     {

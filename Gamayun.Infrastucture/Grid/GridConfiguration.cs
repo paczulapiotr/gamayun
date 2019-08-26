@@ -28,12 +28,14 @@ namespace Gamayun.Infrastucture.Grid
                 var gridProp = new GridProperty();
 
                 var titleAttr = prop.GetCustomAttribute<PropertyTitleAttribute>();
+                var dontFilterAttr = prop.GetCustomAttribute<DontFilterAttribute>();
 
                 gridProp.Name = Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1); // to camelcase
                 gridProp.Title = (titleAttr != null)
                     ? titleAttr.Title
                     : prop.Name;
                 gridProp.Type = prop.PropertyType.GetGridType().GetName();
+                gridProp.Filter = (dontFilterAttr == null);
                 gridProps.Add(gridProp);
             }
             return gridProps;
@@ -56,6 +58,10 @@ namespace Gamayun.Infrastucture.Grid
             {
                 return GridPropertyType.Text;
             }
+            else if (@this.Equals(typeof(bool)))
+            {
+                return GridPropertyType.Boolean;
+            }
                 
             return GridPropertyType.Text;
         }
@@ -71,6 +77,8 @@ namespace Gamayun.Infrastucture.Grid
                     return nameof(GridPropertyType.Text).ToLower();
                 case GridPropertyType.Number:
                     return nameof(GridPropertyType.Number).ToLower();
+                case GridPropertyType.Boolean:
+                    return nameof(GridPropertyType.Boolean).ToLower();
                 default:
                     return default;
             }
