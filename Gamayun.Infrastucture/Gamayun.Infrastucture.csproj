@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Query\Teacher\" />
     <Folder Include="Query\Student\" />
   </ItemGroup>
 

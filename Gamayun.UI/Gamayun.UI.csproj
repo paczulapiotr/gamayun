@@ -25,7 +25,6 @@
     <Folder Include="Areas\Student\Data\" />
     <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Teacher\Data\" />
-    <Folder Include="Areas\Teacher\Models\" />
     <Folder Include="wwwroot\css\sb-admin-2\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\sb-admin-2\" />

@@ -16,6 +16,8 @@ using Gamayun.Infrastucture.Grid.ResultModels;
 using Gamayun.UI.Utilities;
 using Gamayun.Infrastucture.Utilities;
 using Gamayun.Infrastucture.Command.Admin;
+using Gamayun.Infrastucture.Query.Teacher;
+using Gamayun.Infrastucture.Command.Teacher;
 
 namespace Gamayun.UI
 {
@@ -55,11 +57,14 @@ namespace Gamayun.UI
             services.AddScoped<ICommandHandler<EditUserCommandHandler.TeacherCommand>, EditUserCommandHandler>();
             services.AddScoped<ICommandHandler<CreateSemesterCommandHandler.Command>, CreateSemesterCommandHandler>();
             services.AddScoped<ICommandHandler<EditSemesterCommandHandler.Command>, EditSemesterCommandHandler>();
+            services.AddScoped<ICommandHandler<EditTopicCommandHandler.Command>, EditTopicCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateTopicCommandHandler.Command>, CreateTopicCommandHandler>();
             
             services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
             services.AddScoped<IGridQueryHandler<SemesterRM, SemestersQueryHandler.Query>, SemestersQueryHandler>();
+            services.AddScoped<IGridQueryHandler<TopicRM, TopicsQueryHandler.Query>, TopicsQueryHandler>();
 
             var autoMapperConfig = AutomapperService.Initialize();
             services.AddSingleton(autoMapperConfig);
