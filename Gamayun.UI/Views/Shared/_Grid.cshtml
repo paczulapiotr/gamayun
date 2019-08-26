@@ -12,7 +12,17 @@
             fields: [
                 @foreach (var property in @Model.GetGridProperties())
                 {
-                    @:{ name: "@property.Name", type: "@property.Type", title: "@property.Title"},
+                    <text>
+                    {
+                        name: "@property.Name",
+                        type: "@property.Type",
+                        title: "@property.Title",
+                        filtering: @Json.Serialize(property.Filter),
+                        @if (property.Type == GridPropertyType.Boolean.GetName()) {
+                            @:itemTemplate: function (value, item) { return value ? "Yes" : "No"; }
+                        }
+                    },
+                    </text>
                 }
             ],
             controller: {

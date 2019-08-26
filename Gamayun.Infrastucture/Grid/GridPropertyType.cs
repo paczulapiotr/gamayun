@@ -8,6 +8,7 @@ namespace Gamayun.Infrastucture.Grid
     public enum GridPropertyType
     {
         Text,
-        Number
+        Number,
+        Boolean
     }
 }

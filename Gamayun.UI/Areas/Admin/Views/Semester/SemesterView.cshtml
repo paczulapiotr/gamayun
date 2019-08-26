@@ -1,0 +1,36 @@
+﻿@model SemesterVm
+@{ 
+    ViewData["Title"] = "View Semester";
+}
+@await Html.PartialAsync("_PageHeader", "Semester View Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        <p><strong>Major:</strong>&nbsp;@Model.Major</p>
+        <p><strong>Created on:</strong>&nbsp;@Model.CreatedOn</p>
+        <p><strong>Ends on:</strong>&nbsp;@Model.FinishedOn</p>
+        <p><strong>Status:</strong>&nbsp;@(Model.IsActive ? "Active" : "Not active")</p>
+        @if (@Model.IsObsolete)
+        {
+            <div class="alert alert-danger">
+                Semester is obsoleted
+            </div>
+        }
+        <div class="container-controls">
+            <a asp-action="SemesterEdit" asp-route-id="@Model.ID" class="btn btn-primary">Edit</a>
+            @if (@Model.IsObsolete)
+            {
+                <form asp-action="SemesterRestore" asp-route-id="@Model.ID" method="post">
+                    <button class="btn btn-success">Restore</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="SemesterObsolete" asp-route-id="@Model.ID" method="post">
+                    <button class="btn btn-danger">Obsolete</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

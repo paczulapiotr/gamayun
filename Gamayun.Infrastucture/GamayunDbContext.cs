@@ -13,6 +13,7 @@ namespace Gamayun.Infrastucture
         {
         }
 
+        public DbSet<Semester> Semesters { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<PresenceDate> PresenceDates { get; set; }
         public DbSet<Presence> Presences { get; set; }

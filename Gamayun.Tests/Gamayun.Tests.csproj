@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gamayun.Infrastucture\Gamayun.Infrastucture.csproj" />
+    <ProjectReference Include="..\Gamayun.UI\Gamayun.UI.csproj" />
   </ItemGroup>
 
 </Project>

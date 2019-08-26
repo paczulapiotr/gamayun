@@ -146,6 +146,25 @@ namespace Gamayun.Infrastucture.Migrations
                     b.ToTable("Sections");
                 });
 
+            modelBuilder.Entity("Gamayun.Infrastucture.Entities.Semester", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("FinishedOn");
+
+                    b.Property<bool>("IsObsolete");
+
+                    b.Property<string>("Major");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Semesters");
+                });
+
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Student", b =>
                 {
                     b.Property<int>("ID")

@@ -1,0 +1,7 @@
+﻿@model IGridConfiguration
+@{ 
+    ViewData["Title"] = "Search Semesters";
+}
+@await Html.PartialAsync("_PageHeader", "Semester Search Page")
+
+@await Html.PartialAsync("_Grid", Model)

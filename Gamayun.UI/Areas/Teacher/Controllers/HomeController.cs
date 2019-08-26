@@ -16,6 +16,6 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
         {
         }
 
-        public ViewResult Index() => View();
+        public ViewResult Index() => View("_Home");
     }
 }

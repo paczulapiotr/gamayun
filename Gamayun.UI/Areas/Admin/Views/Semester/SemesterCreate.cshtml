@@ -1,0 +1,40 @@
+﻿@using Gamayun.Infrastucture.Command.Admin
+@model CreateSemesterCommandHandler.Command
+@{
+    ViewData["Title"] = "Create Semester";
+    var errors = ViewBag.Errors ?? Array.Empty<string>();
+}
+
+@await Html.PartialAsync("_PageHeader", "Semester Create Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        @foreach (var error in errors)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>@error</strong>
+            </div>
+        }
+        <form asp-area="Admin" asp-controller="Semester" asp-action="SemesterCreate">
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label asp-for="Major">Major</label>
+                    <input asp-for="Major" class="form-control" placeholder="Major" required>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label asp-for="FinishedOn">Finished On</label>
+                    <input asp-for="FinishedOn" class="form-control" placeholder="Finished On" required>
+                </div>
+            </div>
+            <div class="container-controls">
+                <button class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#finishedOn").datepicker();
+    })
+</script>
