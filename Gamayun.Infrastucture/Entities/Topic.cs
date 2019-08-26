@@ -7,7 +7,7 @@ namespace Gamayun.Infrastucture.Entities
 {
     public class Topic : Entity
     {
-        public int TeacherID { get; set; }
+        public int? TeacherID { get; set; }
         [ForeignKey(nameof(TeacherID))]
         public Teacher Teacher { get; set; }
         public string Name { get; set; }

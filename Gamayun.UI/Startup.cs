@@ -57,14 +57,18 @@ namespace Gamayun.UI
             services.AddScoped<ICommandHandler<EditUserCommandHandler.TeacherCommand>, EditUserCommandHandler>();
             services.AddScoped<ICommandHandler<CreateSemesterCommandHandler.Command>, CreateSemesterCommandHandler>();
             services.AddScoped<ICommandHandler<EditSemesterCommandHandler.Command>, EditSemesterCommandHandler>();
-            services.AddScoped<ICommandHandler<EditTopicCommandHandler.Command>, EditTopicCommandHandler>();
             services.AddScoped<ICommandHandler<CreateTopicCommandHandler.Command>, CreateTopicCommandHandler>();
+            services.AddScoped<ICommandHandler<EditTopicCommandHandler.Command>, EditTopicCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateSectionCommandHandler.Command>, CreateSectionCommandHandler>();
+            services.AddScoped<ICommandHandler<EditSectionCommandHandler.Command>, EditSectionCommandHandler>();
             
             services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, StudentsQueryHandler.Query>, StudentsQueryHandler>();
             services.AddScoped<IGridQueryHandler<SemesterRM, SemestersQueryHandler.Query>, SemestersQueryHandler>();
             services.AddScoped<IGridQueryHandler<TopicRM, TopicsQueryHandler.Query>, TopicsQueryHandler>();
+            services.AddScoped<IGridQueryHandler<SectionRM, SectionsQueryHandler.Query>, SectionsQueryHandler>();
+            
 
             var autoMapperConfig = AutomapperService.Initialize();
             services.AddSingleton(autoMapperConfig);

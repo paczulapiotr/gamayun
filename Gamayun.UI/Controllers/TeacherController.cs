@@ -49,6 +49,7 @@ namespace Gamayun.UI.Controllers
             {
                 Leaves = new List<SideMenuLeaf>()
                 {
+
                     new SideMenuLeaf {
                         HeaderName = "Main menu",
                         Categories = new List<SideMenuCategory>
@@ -65,6 +66,20 @@ namespace Gamayun.UI.Controllers
                                      new SideMenuCategoryOption(
                                         "Create New",
                                         this.GetActionUrl<TopicController>(nameof(TopicController.TopicCreate))),
+                                }
+                            },
+                             new SideMenuCategory
+                            {
+                                CategoryName = "Sections",
+                                Icon = Icons.Admin,
+                                Options= new List<SideMenuCategoryOption>
+                                {
+                                    new SideMenuCategoryOption(
+                                        "Search Page",
+                                        this.GetActionUrl<SectionController>(nameof(SectionController.SectionSearch))),
+                                     new SideMenuCategoryOption(
+                                        "Create New",
+                                        this.GetActionUrl<SectionController>(nameof(SectionController.SectionCreate))),
                                 }
                             },
                         }
