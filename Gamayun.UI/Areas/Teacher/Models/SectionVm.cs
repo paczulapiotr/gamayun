@@ -11,5 +11,7 @@ namespace Gamayun.UI.Areas.Teacher.Models
         public string Name { get; set; }
         public string Status { get; set; }
         public string TopicName { get; set; }
+        public IEnumerable<PresenceVm> Presences { get; set; }
+        public IEnumerable<string> Dates { get; internal set; }
     }
 }

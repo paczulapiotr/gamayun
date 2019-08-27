@@ -13,6 +13,8 @@ using Gamayun.UI.Controllers;
 using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,14 +39,49 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
 
         public ActionResult SectionView(int id)
         {
+
             var vm = _dbContext.Sections
                 .ProjectTo<SectionVm>(_mapperConfiguration)
                 .FirstOrDefault(x => x.Id == id);
-
             if (vm == null)
             {
                 return ErrorResult();
             }
+            var section = _dbContext.Sections
+                .Include(x => x.PresenceDates)
+                    .ThenInclude(x => x.Presences)
+                        .ThenInclude(x => x.Student)
+                            .ThenInclude(x => x.AppUser)
+                .FirstOrDefault(x => x.ID == vm.Id);
+
+            var studentPresences = section.PresenceDates
+                .Select(x =>
+                {
+                    var student = x.Presences.FirstOrDefault().Student;
+                    return new PresenceVm
+                    {
+                        Student = student.AppUser.FullName,
+                        StudentId = student.ID
+                    };
+                })
+                .OrderBy(x => x.Student).ToList();
+
+            var presenceDates = section.PresenceDates.OrderBy(x => x.Date);
+            var datesVm = presenceDates.Select(x => x.Date.ToString("dd/MM/yyyy"));
+            foreach (var date in presenceDates)
+            {
+                date.Presences.ToList().ForEach(x =>
+                {
+                    studentPresences
+                    .FirstOrDefault(y => y.StudentId == x.Student.ID)
+                    .StudentPresences.Add(x.WasPresent);
+                });
+            }
+
+            vm.Presences = studentPresences;
+            vm.Dates = datesVm;
+
+            //vm.Presences = presenceData;
             return View(vm);
         }
 
@@ -73,9 +110,9 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
             var vm = _dbContext.Sections.Select(x =>
             new EditSectionCommandHandler.Command
             {
-               Id = x.ID,
-               Name = x.Name,
-               State = x.State,
+                Id = x.ID,
+                Name = x.Name,
+                State = x.State,
             }).FirstOrDefault(x => x.Id == id);
             if (vm == null)
             {

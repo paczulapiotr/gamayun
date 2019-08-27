@@ -10,6 +10,34 @@
         <p><strong>Name:</strong>&nbsp;@Model.Name</p>
         <p><strong>Status:</strong>&nbsp;@Model.Status</p>
         <p><strong>Topic Name:</strong>&nbsp;@Model.TopicName</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    @foreach (var date in Model.Dates)
+                    {
+                        <th>@date</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var presenceData in Model.Presences)
+                {
+                    <tr>
+                        <td>@presenceData.Student</td>
+                        @foreach (var pres in presenceData.StudentPresences)
+                        {
+                            <td>@(pres ? "✔" : "❌")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
         <div class="container-controls">
             <a asp-action="SectionEdit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
         </div>

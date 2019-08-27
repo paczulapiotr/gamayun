@@ -23,7 +23,8 @@ namespace Gamayun.UI.Utilities.AutoMapper.Profiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.State.ToString()))
-                .ForMember(dest => dest.TopicName, opt => opt.MapFrom(src => src.Topic.Name));
+                .ForMember(dest => dest.TopicName, opt => opt.MapFrom(src => src.Topic.Name))
+                .ForMember(dest => dest.Presences, opt => opt.Ignore());
         }
     }
 }
