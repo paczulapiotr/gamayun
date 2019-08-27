@@ -24,12 +24,30 @@
                     },
                     </text>
                 }
+                @foreach (var action in Model.Actions)
+                {
+                    <text>
+                {
+                    type: "text", width: 100, filtering: false, sorting: false,
+                    itemTemplate: function (value, item) {
+                        var actionButton = $("<button>").attr({ class: "btn btn-primary" });
+                        actionButton.text("@action.Title");
+                        actionButton.click(function (e) {
+                                @(action.JsFunction)(item);
+                                e.stopPropagation();
+                            });
+
+                        return $("<div>").append(actionButton)
+                    }
+                },
+                    </text>
+                }
             ],
             controller: {
                 loadData: function (filter) {
-                    var data = formatFilter(filter);
+                        var data = formatFilter(filter);
 
-                    return $.ajax({
+                        return $.ajax({
                         type: "POST",
                         url: "@Model.DataUrl",
                         contentType: "application/json; charset=utf-8",
@@ -38,8 +56,8 @@
                         xhrFields: {
                             withCredentials: true
                         }
-                    });
-                },
+                        });
+                    },
             },
             height: "auto",
             width: "100%",

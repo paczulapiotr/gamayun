@@ -2,6 +2,7 @@
 {
     public enum SectionState
     {
+        Created,
         Active,
         Closed,
         Canceled

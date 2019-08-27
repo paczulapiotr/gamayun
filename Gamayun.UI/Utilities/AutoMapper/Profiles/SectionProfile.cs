@@ -15,13 +15,13 @@ namespace Gamayun.UI.Utilities.AutoMapper.Profiles
         {
             CreateMap<Section, SectionRM>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.State))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.State.ToString()))
                 .ForMember(dest => dest.TopicName, opt => opt.MapFrom(src => src.Topic.Name));
 
             CreateMap<Section, SectionVm>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.State))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.State.ToString()))
                 .ForMember(dest => dest.TopicName, opt => opt.MapFrom(src => src.Topic.Name));
         }

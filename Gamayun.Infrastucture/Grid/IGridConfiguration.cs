@@ -9,5 +9,6 @@ namespace Gamayun.Infrastucture.Grid
         string SelectHref { get; }
         bool Selectable { get; }
         IEnumerable<GridProperty> GetGridProperties();
+        List<GridAction> Actions { get; }
     }
 }

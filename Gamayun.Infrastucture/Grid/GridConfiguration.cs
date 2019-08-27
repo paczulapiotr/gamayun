@@ -15,6 +15,8 @@ namespace Gamayun.Infrastucture.Grid
 
         public string DataUrl { get; set; }
 
+        public List<GridAction> Actions { get; set; } = new List<GridAction>();
+
         public IEnumerable<GridProperty> GetGridProperties()
         {
             var gridProps = new List<GridProperty>();

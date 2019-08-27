@@ -19,15 +19,9 @@ namespace Gamayun.Infrastucture.Query.Teacher
         {
             var sections = _dbContext.Sections.Join(
                 _dbContext.Topics.Where(t => t.TeacherID == query.TeacherID),
-                x => x.ID,
+                x => x.TopicID,
                 y => y.ID,
-                (sec, top) => new SectionRM
-                {
-                    Id = sec.ID,
-                    Name = sec.Name,
-                    Status = sec.State.ToString(),
-                    TopicName = top.Name
-                });
+                (sec, top) => sec);
 
             return Result(filters, sections);
         }
