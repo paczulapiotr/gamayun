@@ -72,7 +72,7 @@
             paging: true,
             autoload: true,
 
-            pageSize: 15,
+            pageSize: @(Model.PageSize ?? 15),
             pageButtonCount: 5,
 
             rowClass: function (item, itemIndex) { },

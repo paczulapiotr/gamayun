@@ -7,6 +7,7 @@ using Gamayun.Infrastucture.Command.Teacher;
 using Gamayun.Infrastucture.Grid;
 using Gamayun.Infrastucture.Grid.ResultModels;
 using Gamayun.Infrastucture.Query;
+using Gamayun.Infrastucture.Query.Admin;
 using Gamayun.Infrastucture.Query.Teacher;
 using Gamayun.UI.Areas.Teacher.Models;
 using Gamayun.UI.Controllers;
@@ -88,9 +89,15 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
         public ViewResult SectionCreate()
             => View(new SectionCreateVm
             {
-                GridConfiguration = new GridConfiguration<TopicRM>
+                TopicGridConfiguration = new GridConfiguration<TopicRM>
                 {
                     DataUrl = this.GetActionUrl<TopicController>(nameof(TopicController.TopicSearchQuery)),
+                    PageSize = 3,
+                },
+                SemesterGridConfiguration = new GridConfiguration<SemesterRM>
+                {
+                    DataUrl = this.GetActionUrl(nameof(SemesterSearchQuery)),
+                    PageSize = 3,
                 }
             });
         [HttpPost]
@@ -146,6 +153,9 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
             {
                 TeacherID = await GetTeacherId() ?? 0
             }));
+        [HttpPost]
+        public JsonResult SemesterSearchQuery([FromBody]GridFilters<SemesterRM> filters)
+        => Json(_gridQueryRunner.Run(filters, new SemestersQueryHandler.Query()));
 
     }
 }

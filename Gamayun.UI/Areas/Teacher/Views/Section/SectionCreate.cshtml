@@ -1,10 +1,17 @@
 ﻿@using Gamayun.Infrastucture.Grid.ResultModels
 @model SectionCreateVm
 @{
-    var gridConfiguration = Model.GridConfiguration;
-    gridConfiguration.Actions.Add(new GridAction
+    var topicGridConfiguration = Model.TopicGridConfiguration;
+    topicGridConfiguration.Actions.Add(new GridAction
     {
         JsFunction = "topicAction",
+        Title = "Choose"
+    });
+
+    var semesterGridConfiguration = Model.SemesterGridConfiguration;
+    semesterGridConfiguration.Actions.Add(new GridAction
+    {
+        JsFunction = "semesterAction",
         Title = "Choose"
     });
 
@@ -15,16 +22,45 @@
 @await Html.PartialAsync("_PageHeader", "Section Create Page")
 
 <hr />
-<h6>Available Topics:</h6>
-@await Html.PartialAsync("_Grid", gridConfiguration)
+<div class="row">
+    <div class="col-xl-6">
+        <h6>Available Topics:</h6>
+        @await Html.PartialAsync("_Grid", topicGridConfiguration)
+    </div>
+    <div class="col-xl-6">
+        <h6>Available Semesters:</h6>
+        @await Html.PartialAsync("_Grid", semesterGridConfiguration)
+    </div>
+</div>
 <hr />
 
 <script>
+    var topicLock = false;
+    var semesterLock = false;
+
     function topicAction(item) {
         $("#topicName").val(item.name)
         $("#topicId").val(item.id)
-        $("#create-section").prop("disabled", false);
+        topicLock = true;
+
+        if (topicLock && semesterLock) {
+            $("#create-section").prop("disabled", false);
+        }
     }
+
+   function semesterAction(item) {
+       if (!item.isActive) {
+           alert("Please choose active semester");
+           return;
+       }
+       $("#semesterName").val(item.major)
+        $("#semesterId").val(item.id)
+       semesterLock = true;
+       
+       if (topicLock && semesterLock) {
+           $("#create-section").prop("disabled", false);
+       }
+   }
 </script>
 
 <div class="container-fluid">
@@ -37,16 +73,21 @@
         }
         <form asp-area="Teacher" asp-controller="Section" asp-action="SectionCreate">
             <div class="row">
-                <div class="col-lg-6 form-group">
+                <div class="col-xl-6 form-group">
                     <label for="name">Name</label>
                     <input id="name" name="name" class="form-control" placeholder="Name" required>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6 form-group">
+                <div class="col-xl-6 form-group">
                     <label for="name">Topic</label>
                     <input id="topicName" class="form-control" placeholder="Choose Topic" disabled required>
                     <input hidden id="topicId" name="topicId" />
+                </div>
+                <div class="col-xl-6 form-group">
+                    <label for="name">Semester</label>
+                    <input id="semesterName" class="form-control" placeholder="Choose Semester" disabled required>
+                    <input hidden id="semesterId" name="semesterId" />
                 </div>
             </div>
             <div class="container-controls">

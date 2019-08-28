@@ -9,6 +9,7 @@ namespace Gamayun.UI.Areas.Teacher.Models
 {
     public class SectionCreateVm
     {
-        public GridConfiguration<TopicRM> GridConfiguration { get; set; }
+        public GridConfiguration<TopicRM> TopicGridConfiguration { get; set; }
+        public GridConfiguration<SemesterRM> SemesterGridConfiguration { get; set; }
     }
 }

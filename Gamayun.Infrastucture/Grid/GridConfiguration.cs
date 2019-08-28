@@ -10,6 +10,7 @@ namespace Gamayun.Infrastucture.Grid
         public string GridSelector { get; set; }
 
         public string SelectHref { get; set; }
+        public int? PageSize { get; set; }
 
         public bool Selectable => !string.IsNullOrWhiteSpace(SelectHref);
 

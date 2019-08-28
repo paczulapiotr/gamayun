@@ -26,12 +26,19 @@ namespace Gamayun.Infrastucture.Command.Teacher
             {
                 return CommandResult.Failed("Given topic doesn't exist");
             }
+            if (!_dbContext.Semesters
+                .Where(x=>x.IsActive && x.ID == command.SemesterId)
+                .Any())
+            {
+                return CommandResult.Failed("Given semester is invalid");
+            }
 
             _dbContext.Sections.Add(new Section
             {
                 Name = command.Name,
                 State = SectionState.Created,
-                TopicID = command.TopicId
+                TopicID = command.TopicId,
+                SemesterID = command.SemesterId
             });
             _dbContext.SaveChanges();
             return CommandResult.Success();
@@ -41,6 +48,7 @@ namespace Gamayun.Infrastucture.Command.Teacher
         {
             public string Name { get; set; }
             public int? TopicId { get; set; }
+            public int? SemesterId { get; set; }
         }
     }
 }
