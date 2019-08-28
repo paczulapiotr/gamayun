@@ -37,7 +37,7 @@ var GamayunSectionCreate = function () {
 
         students.push(studentId);
         var rowId = "row_" + item.id;
-        var row = $("<tr id='" + rowId + "'>" + "<td>" + item.firstName + " " + item.lastName + "<td><td><button class='btn btn-danger'>Remove</button></td>" + "</tr>");
+        var row = $("<tr id='" + rowId + "'>" + "<td>" + item.firstName + " " + item.lastName + "<td><td><button type='button' class='btn btn-danger'>Remove</button></td>" + "</tr>");
         $("#student-container").append(row);
 
         $("#" + rowId + " button").click(function () {

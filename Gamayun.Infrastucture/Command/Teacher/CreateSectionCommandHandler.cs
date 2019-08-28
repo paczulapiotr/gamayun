@@ -1,5 +1,6 @@
 ﻿using Gamayun.Infrastucture.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,7 +36,6 @@ namespace Gamayun.Infrastucture.Command.Teacher
                 return CommandResult.Failed("Given semester is invalid");
             }
 
-            //Transaction
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
@@ -74,9 +74,24 @@ namespace Gamayun.Infrastucture.Command.Teacher
 
                     _dbContext.StudentSections.AddRange(studentSections);
                     _dbContext.SaveChanges();
+
+                    // Add presences
+                    var dates = command.Presences.Split(',').ToList().Select(x => DateTime.Parse(x));
+                    var presenceDates = dates.Select(x => new PresenceDate
+                    {
+                        Date = x,
+                        SectionID = section.ID,
+                        Presences = studentSections.Select(s => new Presence
+                        {
+                            StudentID=s.Student.ID
+                        }).ToList(),
+                    });
+
+                    _dbContext.PresenceDates.AddRange(presenceDates);
+                    _dbContext.SaveChanges();
                     transaction.Commit();
                 }
-                catch
+                catch (Exception ex)
                 {
 
                     transaction.Rollback();
@@ -93,6 +108,7 @@ namespace Gamayun.Infrastucture.Command.Teacher
             public int? TopicId { get; set; }
             public int? SemesterId { get; set; }
             public string Students { get; set; }
+            public string Presences { get; set; }
         }
     }
 }
