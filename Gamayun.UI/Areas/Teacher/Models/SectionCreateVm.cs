@@ -11,5 +11,6 @@ namespace Gamayun.UI.Areas.Teacher.Models
     {
         public GridConfiguration<TopicRM> TopicGridConfiguration { get; set; }
         public GridConfiguration<SemesterRM> SemesterGridConfiguration { get; set; }
+        public GridConfiguration<UserRM> StudentGridConfiguration { get; set; }
     }
 }

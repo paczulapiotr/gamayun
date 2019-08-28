@@ -98,7 +98,12 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
                 {
                     DataUrl = this.GetActionUrl(nameof(SemesterSearchQuery)),
                     PageSize = 3,
-                }
+                },
+                StudentGridConfiguration= new GridConfiguration<UserRM>
+                {
+                    DataUrl = this.GetActionUrl(nameof(StudentSearchQuery)),
+                    PageSize = 3,
+                },
             });
         [HttpPost]
         public ActionResult SectionCreate(CreateSectionCommandHandler.Command command)
@@ -157,5 +162,8 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
         public JsonResult SemesterSearchQuery([FromBody]GridFilters<SemesterRM> filters)
         => Json(_gridQueryRunner.Run(filters, new SemestersQueryHandler.Query()));
 
+        [HttpPost]
+        public JsonResult StudentSearchQuery([FromBody]GridFilters<UserRM> filters)
+       => Json(_gridQueryRunner.Run(filters, new StudentsForSectionQueryHandler.Query()));
     }
 }

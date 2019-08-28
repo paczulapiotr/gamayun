@@ -2,12 +2,13 @@
 using Gamayun.Infrastucture.Grid;
 using Gamayun.Infrastucture.Grid.ResultModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Gamayun.Infrastucture.Query.Admin
 {
-    public class AdminsQueryHandler : GridQueryHandler<UserRM, AdminsQueryHandler.Query>
+    public class StudentsForSectionQueryHandler : GridQueryHandler<UserRM, StudentsForSectionQueryHandler.Query>
     {
-        public AdminsQueryHandler(
+        public StudentsForSectionQueryHandler(
             GamayunDbContext dbContext,
             MapperConfiguration mapperConfiguration)
             : base(dbContext, mapperConfiguration)
@@ -16,11 +17,13 @@ namespace Gamayun.Infrastucture.Query.Admin
 
         public override GridResult<UserRM> Execute(GridFilters<UserRM> filters, Query query)
         {
-            var admins = _dbContext.Admins
-                .Include(a => a.AppUser);
+            var students = _dbContext.Students
+                .Include(a => a.AppUser)
+                .Where(x => !x.AppUser.IsObsolete);
 
-            return Result(filters, admins);
+            return Result(filters, students);
         }
+
 
         public class Query : IGridQuery
         {

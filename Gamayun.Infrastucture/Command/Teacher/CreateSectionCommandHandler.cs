@@ -1,4 +1,6 @@
 ﻿using Gamayun.Infrastucture.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gamayun.Infrastucture.Command.Teacher
@@ -33,14 +35,55 @@ namespace Gamayun.Infrastucture.Command.Teacher
                 return CommandResult.Failed("Given semester is invalid");
             }
 
-            _dbContext.Sections.Add(new Section
+            //Transaction
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                Name = command.Name,
-                State = SectionState.Created,
-                TopicID = command.TopicId,
-                SemesterID = command.SemesterId
-            });
-            _dbContext.SaveChanges();
+                try
+                {
+                    var section = new Section
+                    {
+                        Name = command.Name,
+                        State = SectionState.Created,
+                        TopicID = command.TopicId,
+                        SemesterID = command.SemesterId,
+                    };
+                    _dbContext.Sections.Add(section);
+                    _dbContext.SaveChanges();
+
+                    // Add students
+
+                    var studentIds = new List<int>();
+                    int result;
+                    command.Students.Split(',').ToList().ForEach(x =>
+                    {
+                        if (int.TryParse(x, out result))
+                        {
+                            studentIds.Add(result);
+                        }
+                    });
+
+                    var studentSections = _dbContext.Students
+                        .Include(x => x.AppUser)
+                        .Where(x => !x.AppUser.IsObsolete)
+                        .Where(x => studentIds.Contains(x.ID))
+                        .Select(x => new StudentSection
+                        {
+                            Section = section,
+                            Student = x
+                        }).ToList();
+
+                    _dbContext.StudentSections.AddRange(studentSections);
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
+                }
+                catch
+                {
+
+                    transaction.Rollback();
+                    return CommandResult.Failed();
+                }
+            }
+          
             return CommandResult.Success();
         }
 
@@ -49,6 +92,7 @@ namespace Gamayun.Infrastucture.Command.Teacher
             public string Name { get; set; }
             public int? TopicId { get; set; }
             public int? SemesterId { get; set; }
+            public string Students { get; set; }
         }
     }
 }

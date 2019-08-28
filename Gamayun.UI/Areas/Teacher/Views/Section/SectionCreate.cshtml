@@ -4,65 +4,53 @@
     var topicGridConfiguration = Model.TopicGridConfiguration;
     topicGridConfiguration.Actions.Add(new GridAction
     {
-        JsFunction = "topicAction",
+        JsFunction = "sectionCreate.topicAction",
         Title = "Choose"
     });
 
     var semesterGridConfiguration = Model.SemesterGridConfiguration;
     semesterGridConfiguration.Actions.Add(new GridAction
     {
-        JsFunction = "semesterAction",
+        JsFunction = "sectionCreate.semesterAction",
         Title = "Choose"
+    });
+
+    var studentGridConfiguration = Model.StudentGridConfiguration;
+    studentGridConfiguration.Actions.Add(new GridAction
+    {
+        JsFunction = "sectionCreate.studentAction",
+        Title = "Add"
     });
 
     ViewData["Title"] = "Create Section";
     var errors = ViewBag.Errors ?? Array.Empty<string>();
 }
+<script src="~/js/Teacher/Section/Gamayun.Section.Create.js"></script>
+<script>
+    var sectionCreate = new GamayunSectionCreate();
+</script>
 
 @await Html.PartialAsync("_PageHeader", "Section Create Page")
 
 <hr />
 <div class="row">
     <div class="col-xl-6">
-        <h6>Available Topics:</h6>
+        <h2><strong>Available Topics:</strong></h2>
         @await Html.PartialAsync("_Grid", topicGridConfiguration)
     </div>
     <div class="col-xl-6">
-        <h6>Available Semesters:</h6>
+        <h2><strong>Available Semesters:</strong></h2>
         @await Html.PartialAsync("_Grid", semesterGridConfiguration)
     </div>
 </div>
 <hr />
-
-<script>
-    var topicLock = false;
-    var semesterLock = false;
-
-    function topicAction(item) {
-        $("#topicName").val(item.name)
-        $("#topicId").val(item.id)
-        topicLock = true;
-
-        if (topicLock && semesterLock) {
-            $("#create-section").prop("disabled", false);
-        }
-    }
-
-   function semesterAction(item) {
-       if (!item.isActive) {
-           alert("Please choose active semester");
-           return;
-       }
-       $("#semesterName").val(item.major)
-        $("#semesterId").val(item.id)
-       semesterLock = true;
-       
-       if (topicLock && semesterLock) {
-           $("#create-section").prop("disabled", false);
-       }
-   }
-</script>
-
+<div class="row">
+    <div class="col-xl-12">
+        <h2><strong>All students:</strong></h2>
+        @await Html.PartialAsync("_Grid", studentGridConfiguration)
+    </div>
+</div>
+<hr />
 <div class="container-fluid">
     <div class="jumbotron">
         @foreach (var error in errors)
@@ -90,6 +78,17 @@
                     <input hidden id="semesterId" name="semesterId" />
                 </div>
             </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="student-container">
+                </tbody>
+            </table>
+            <input hidden name="students" />
             <div class="container-controls">
                 <button id="create-section" class="btn btn-primary" disabled>Create</button>
             </div>

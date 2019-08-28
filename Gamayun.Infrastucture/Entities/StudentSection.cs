@@ -15,7 +15,7 @@ namespace Gamayun.Infrastucture.Entities
         public Student Student { get; set; }
         
         [Range(2,5)]
-        public int Grade { get; set; }
+        public int? Grade { get; set; }
     }
 
     public class StudentSectionEntityTypeConfiguration : IEntityTypeConfiguration<StudentSection>

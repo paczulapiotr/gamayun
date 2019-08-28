@@ -68,6 +68,7 @@ namespace Gamayun.UI
             services.AddScoped<IGridQueryHandler<SemesterRM, SemestersQueryHandler.Query>, SemestersQueryHandler>();
             services.AddScoped<IGridQueryHandler<TopicRM, TopicsQueryHandler.Query>, TopicsQueryHandler>();
             services.AddScoped<IGridQueryHandler<SectionRM, SectionsQueryHandler.Query>, SectionsQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, StudentsForSectionQueryHandler.Query>, StudentsForSectionQueryHandler>();
             
 
             var autoMapperConfig = AutomapperService.Initialize();
