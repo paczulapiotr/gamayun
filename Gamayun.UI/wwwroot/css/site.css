@@ -11,3 +11,8 @@
 .container-controls > * {
     margin-left: 1em;
 }
+
+.big-checkbox {
+    width: 1.2em;
+    height: 1.2em
+}

@@ -11,13 +11,13 @@
         <p><strong>Status:</strong>&nbsp;@Model.Status</p>
         <p><strong>Topic Name:</strong>&nbsp;@Model.TopicName</p>
 
-        <table class="table table-striped">
+        <table id="presence-picker" class="table table-striped">
             <thead>
                 <tr>
                     <th>Student</th>
-                    @foreach (var date in Model.Dates)
+                    @foreach (var dateVm in Model.Dates)
                     {
-                        <th>@date</th>
+                        <th>@dateVm.date</th>
                     }
                 </tr>
             </thead>
@@ -29,12 +29,21 @@
                         <td>@presenceData.Student</td>
                         @foreach (var pres in presenceData.StudentPresences)
                         {
-                            <td>@(pres ? "✔" : "❌")</td>
+                            <td class="data-cell">
+                                <input class="big-checkbox was-present" type="checkbox" @(pres.wasPresent ? "checked" : "")>
+                                <input hidden class="date-id" value="@pres.presenceDateId" />
+                                <input hidden class="student-id" value="@presenceData.StudentId" />
+                                
+                            </td>
                         }
                     </tr>
                 }
             </tbody>
         </table>
+        <form id="presence-form" method="post" asp-action="UpdatePresences" asp-controller="Section">
+            <input name="data" hidden />
+            <button class="btn btn-primary">Save</button>
+        </form>
 
 
 
@@ -43,3 +52,19 @@
         </div>
     </div>
 </div>
+<script>
+    $('#presence-form').submit(function () {
+        var dataCells = $("#presence-picker .data-cell");
+        var formInput = $('#presence-form input[name="data"]');
+        var data = [];
+        dataCells.each(function (index, elem) {
+            var wasPresent = $(elem).find(".was-present").get(0).checked;
+            var dateId = $(elem).find(".date-id").val();
+            var studentId = $(elem).find(".student-id").val();
+            
+            data.push("[" + studentId + ":" + dateId + ":" + wasPresent + "]");
+        });
+
+        formInput.val(data.toString());
+    });
+</script>

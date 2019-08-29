@@ -55,34 +55,34 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
                             .ThenInclude(x => x.AppUser)
                 .FirstOrDefault(x => x.ID == vm.Id);
 
-            var studentPresences = section.PresenceDates
-                .Select(x =>
-                {
-                    var student = x.Presences.FirstOrDefault().Student;
-                    return new PresenceVm
-                    {
-                        Student = student.AppUser.FullName,
-                        StudentId = student.ID
-                    };
-                })
-                .OrderBy(x => x.Student).ToList();
-
-            var presenceDates = section.PresenceDates.OrderBy(x => x.Date);
-            var datesVm = presenceDates.Select(x => x.Date.ToString("dd/MM/yyyy"));
-            foreach (var date in presenceDates)
+            var studentGroupedPresences = section.PresenceDates.SelectMany(x => x.Presences.Select(y => new
             {
-                date.Presences.ToList().ForEach(x =>
-                {
-                    studentPresences
-                    .FirstOrDefault(y => y.StudentId == x.Student.ID)
-                    .StudentPresences.Add(x.WasPresent);
-                });
-            }
+                Date = x.Date,
+                DateId = x.ID,
+                StudentId = y.StudentID,
+                Student = y.Student.AppUser.FullName,
+                WasPresent = y.WasPresent
+            })).GroupBy(x => x.StudentId).ToList();
 
-            vm.Presences = studentPresences;
+            var presencesVm = studentGroupedPresences.Select(x => {
+                var studentData = x.Select(z => new { z.Student, z.StudentId }).FirstOrDefault();
+                return new PresenceVm
+                {
+                    Student = studentData.Student,
+                    StudentId = studentData.StudentId ?? 0,
+                    StudentPresences = x.Select(y => (y.WasPresent, y.DateId)).ToList(),
+                };
+            });
+
+            List<(string date, int presenceDateId)> datesVm = section.PresenceDates
+                .OrderBy(x => x.Date)
+                .Select(x => (x.Date.ToString("dd MMMM yyyy"), x.ID))
+                .ToList();
+
+
+            vm.Presences = presencesVm;
             vm.Dates = datesVm;
 
-            //vm.Presences = presenceData;
             return View(vm);
         }
 
@@ -165,5 +165,13 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
         [HttpPost]
         public JsonResult StudentSearchQuery([FromBody]GridFilters<UserRM> filters)
        => Json(_gridQueryRunner.Run(filters, new StudentsForSectionQueryHandler.Query()));
+
+        [HttpPost]
+        public ActionResult UpdatePresences(string data)
+        {
+            // [studentId:dateId:wasPresent]
+            var temp = data; 
+            return BadRequest();
+        }
     }
 }

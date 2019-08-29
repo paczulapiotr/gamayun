@@ -97,8 +97,8 @@
                     <input id="presence-selector" class="form-control-sm" readonly/>
                     <button type="button" style="margin-left:1em;" class="btn btn-primary" id="add-presence">Add</button>
                     <button type="reset" style="margin-left:1em;" class="btn btn-danger" id="reset-presence">Reset</button>
-                    <ol id="presence-container">
-                    </ol>
+                    <ul id="presence-container" class="list-group">
+                    </ul>
                 </div>
             </div>
             
@@ -117,10 +117,10 @@
     $("#add-presence").click(function () {
         var date = $("#presence-selector").val();
         if (!isNaN(Date.parse(date))) {
-            console.log("GUCCI:", date, new Date(date));
             presences.push(date);
-            $("#presence-container").append($("<li><strong>" + date + "</strong></li>"));
+            $("#presence-container").append($("<li class='list-group-item'><strong>" + date + "</strong></li>"));
             $("[name='presences']").val(presences.toString());
+            $("#presence-selector").val("");
         }
     });
 
