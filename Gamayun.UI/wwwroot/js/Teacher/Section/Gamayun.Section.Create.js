@@ -29,7 +29,6 @@ var GamayunSectionCreate = function () {
     }
 
     function _studentAction(item) {
-        console.log(students);
         var studentId = item.id
         if ($.inArray(studentId, students) != -1) {
             return;

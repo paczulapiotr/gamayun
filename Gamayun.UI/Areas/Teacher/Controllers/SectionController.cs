@@ -15,6 +15,7 @@ using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -65,7 +66,8 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
                 WasPresent = y.WasPresent
             })).GroupBy(x => x.StudentId).ToList();
 
-            var presencesVm = studentGroupedPresences.Select(x => {
+            var presencesVm = studentGroupedPresences.Select(x =>
+            {
                 var studentData = x.Select(z => new { z.Student, z.StudentId }).FirstOrDefault();
                 return new PresenceVm
                 {
@@ -73,7 +75,7 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
                     StudentId = studentData.StudentId ?? 0,
                     StudentPresences = x.Select(y => (y.WasPresent, y.DateId)).ToList(),
                 };
-            });
+            }).OrderBy(x => x.Student);
 
             List<(string date, int presenceDateId)> datesVm = section.PresenceDates
                 .OrderBy(x => x.Date)
@@ -120,23 +122,43 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
         }
         public ActionResult SectionEdit(int id)
         {
-            var vm = _dbContext.Sections.Select(x =>
-            new EditSectionCommandHandler.Command
+            var vm = _dbContext.Sections
+                .Include(x=>x.StudentSections)
+                .ThenInclude(y=>y.Student)
+                .ThenInclude(z=>z.AppUser)
+                .Select(x =>
+            new SectionEditVm
             {
                 Id = x.ID,
                 Name = x.Name,
                 State = x.State,
+                Students = x.StudentSections.Select(y => new SectionStudentVm { Id = y.StudentID, Name = y.Student.AppUser.FullName }),
             }).FirstOrDefault(x => x.Id == id);
             if (vm == null)
             {
                 return ErrorResult();
             }
+
+            vm.StudentsGridConfiguration = new GridConfiguration<UserRM>
+            {
+                DataUrl = GetActionUrl(nameof(StudentSearchQuery)),
+            };
             return View(vm);
         }
 
         [HttpPost]
-        public ActionResult SectionEdit(EditSectionCommandHandler.Command command)
+        public ActionResult SectionEdit(SectionEditDTO dto)
         {
+            var command = new EditSectionCommandHandler.Command
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                State = dto.State,
+                StudentIds = string.IsNullOrWhiteSpace(dto.StudentIds) 
+                ? new List<int>() 
+                : dto.StudentIds.Split(',').Select(x => int.Parse(x)).ToList(),
+            };
+
             var result = _commandRunner.Run(command);
             if (result.Succeeded)
             {

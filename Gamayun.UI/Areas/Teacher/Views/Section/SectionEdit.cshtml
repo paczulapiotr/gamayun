@@ -1,8 +1,14 @@
 ﻿@using Gamayun.Infrastucture.Entities
-@model EditSectionCommandHandler.Command
+@model SectionEditVm
 @{
     ViewData["Title"] = "Edit Section";
     var errors = ViewBag.Errors ?? Array.Empty<string>();
+     var studentGridConfiguration = Model.StudentsGridConfiguration;
+    studentGridConfiguration.Actions.Add(new GridAction
+    {
+        JsFunction = "studentAction",
+        Title = "Add"
+    });
 }
 
 @await Html.PartialAsync("_PageHeader", "Section Edit Page")
@@ -16,8 +22,35 @@
                 <strong>@error</strong>
             </div>
         }
-        <form asp-area="Teacher" asp-controller="Section" asp-action="SectionEdit">
+        <div class="row">
+            <div class="col-xl-6">
+                 <h2><strong>All students:</strong></h2>
+                 @await Html.PartialAsync("_Grid", studentGridConfiguration)
+            </div>
+            <div class="col-xl-6">
+                 <h2><strong>Picked students:</strong></h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-container">
+                            @foreach (var item in Model.Students)
+                            {
+                                <tr class="predefined-student" id='@($"{item.Id}")'>
+                                    <td>@item.Name<td>
+                                    <td><button type='button' class='btn btn-danger'>Remove</button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <form id="edit-form" asp-area="Teacher" asp-controller="Section" asp-action="SectionEdit">
             <input hidden asp-for="Id" />
+            <input hidden name="studentIds" />
             <div class="row">
                 <div class="col-lg-6 form-group">
                     <label asp-for="Name">Name</label>
@@ -34,3 +67,37 @@
         </form>
     </div>
 </div>
+<script>
+    debugger;
+    $(".predefined-student").each(function (index, elem) {
+        $(elem).find("button").click(function () {
+            var studentId = +$(elem).prop("id")
+            students = students.filter(x => x !== studentId);
+            $("#" + studentId).remove();
+        })
+    })
+
+    var students = [@(String.Join(", ", Model.Students.Select(x=>x.Id)))];
+    var studentAction = function (item) {
+        var studentId = item.id
+        if ($.inArray(studentId, students) != -1) {
+            return;
+        }
+
+        students.push(studentId);
+        var rowId = "row_" + item.id;
+        var row = $("<tr id='" + rowId + "'>" + "<td>" + item.firstName + " " + item.lastName + "<td><td><button type='button' class='btn btn-danger'>Remove</button></td>" + "</tr>");
+        $("#student-container").append(row);
+
+        $("#" + rowId + " button").click(function () {
+            students = students.filter(x => x !== studentId);
+            $("#" + rowId).remove();
+        })
+    }
+
+    $("#edit-form").submit(function () {
+        $('[name="studentIds"]').val(students.toString());
+    })
+
+
+</script>
