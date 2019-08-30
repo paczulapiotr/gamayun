@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Gamayun.UI.Areas.Teacher.Controllers
@@ -167,11 +168,25 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
        => Json(_gridQueryRunner.Run(filters, new StudentsForSectionQueryHandler.Query()));
 
         [HttpPost]
-        public ActionResult UpdatePresences(string data)
+        public ActionResult UpdatePresences(string data, int sectionId)// data = [studentId:dateId:wasPresent]
         {
-            // [studentId:dateId:wasPresent]
-            var temp = data; 
-            return BadRequest();
+            var regex = new Regex(@"(\d):(\d):(false|true)", RegexOptions.IgnoreCase);
+            (int studentId, int dateId, bool wasPresent)[] tuple = data.Split(',').Select(x => {
+                var groups = regex.Match(x).Groups;
+                return
+                    (int.Parse(groups[1].Value),
+                    int.Parse(groups[2].Value),
+                    bool.Parse(groups[3].Value.ToLower()));
+                }).ToArray();
+
+            var result = _commandRunner.Run(new UpdateSectionPresencesCommandHandler.Command(tuple, sectionId));
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(SectionView), new { id = sectionId });
+            }
+
+            return Error();
         }
     }
 }

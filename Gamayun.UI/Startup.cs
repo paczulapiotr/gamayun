@@ -61,6 +61,7 @@ namespace Gamayun.UI
             services.AddScoped<ICommandHandler<EditTopicCommandHandler.Command>, EditTopicCommandHandler>();
             services.AddScoped<ICommandHandler<CreateSectionCommandHandler.Command>, CreateSectionCommandHandler>();
             services.AddScoped<ICommandHandler<EditSectionCommandHandler.Command>, EditSectionCommandHandler>();
+            services.AddScoped<ICommandHandler<UpdateSectionPresencesCommandHandler.Command>, UpdateSectionPresencesCommandHandler>();
             
             services.AddScoped<IGridQueryHandler<UserRM, TeachersQueryHandler.Query>, TeachersQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, AdminsQueryHandler.Query>, AdminsQueryHandler>();
