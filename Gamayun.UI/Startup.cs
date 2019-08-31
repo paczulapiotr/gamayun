@@ -18,6 +18,7 @@ using Gamayun.Infrastucture.Utilities;
 using Gamayun.Infrastucture.Command.Admin;
 using Gamayun.Infrastucture.Query.Teacher;
 using Gamayun.Infrastucture.Command.Teacher;
+using Gamayun.Infrastucture.Query.Student;
 
 namespace Gamayun.UI
 {
@@ -70,8 +71,10 @@ namespace Gamayun.UI
             services.AddScoped<IGridQueryHandler<TopicRM, TopicsQueryHandler.Query>, TopicsQueryHandler>();
             services.AddScoped<IGridQueryHandler<SectionRM, SectionsQueryHandler.Query>, SectionsQueryHandler>();
             services.AddScoped<IGridQueryHandler<UserRM, StudentsForSectionQueryHandler.Query>, StudentsForSectionQueryHandler>();
+            services.AddScoped<IGridQueryHandler<UserRM, StudentsForSectionQueryHandler.Query>, StudentsForSectionQueryHandler>();
+            services.AddScoped<IGridQueryHandler<SectionRM, MySectionsQueryHandler.Query>, MySectionsQueryHandler>();
+            services.AddScoped<IGridQueryHandler<SectionRM, FindSectionsQueryHandler.Query>, FindSectionsQueryHandler>();
             
-
             var autoMapperConfig = AutomapperService.Initialize();
             services.AddSingleton(autoMapperConfig);
             

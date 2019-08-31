@@ -1,0 +1,19 @@
+﻿@using Gamayun.UI.Areas.Student.Models
+@model StudentSectionVm
+@{
+    ViewData["Title"] = "View Section";
+}
+@await Html.PartialAsync("_PageHeader", "View Section")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        <p><strong>Name:</strong>&nbsp;@Model.Name</p>
+        <p><strong>Topic Name:</strong>&nbsp;@Model.TopicName</p>
+        <p><strong>Status:</strong>&nbsp;@Model.Status</p>
+        <p><strong>Grade:</strong>&nbsp;@Model.Grade</p>
+        <form asp-action="SignOut" asp-route-id="@Model.Id" method="post">
+            <button class="btn btn-danger">Sign out</button>
+        </form>
+    </div>
+</div>

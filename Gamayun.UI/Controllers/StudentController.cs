@@ -1,6 +1,7 @@
 ﻿using Gamayun.Identity;
 using Gamayun.Infrastucture.Command;
 using Gamayun.Infrastucture.Query;
+using Gamayun.UI.Areas.Student.Controllers;
 using Gamayun.UI.Models;
 using Gamayun.UI.Utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -28,48 +29,26 @@ namespace Gamayun.UI.Controllers
             {
                 Leaves = new List<SideMenuLeaf>()
                 {
-                    new SideMenuLeaf
-                    {
+                    new SideMenuLeaf {
                         HeaderName = "Main menu",
                         Categories = new List<SideMenuCategory>
                         {
-                            new SideMenuCategory
+                             new SideMenuCategory
                             {
-                                CategoryName = "Majors",
-                                Options = new List<SideMenuCategoryOption>()
+                                CategoryName = "Sections",
+                                Icon = Icons.Admin,
+                                Options= new List<SideMenuCategoryOption>
                                 {
-                                    new SideMenuCategoryOption
-                                    {
-                                        OptionName = "Search",
-                                        AnchorHref = "/majors/search"
-                                    },
-                                    new SideMenuCategoryOption
-                                    {
-                                        OptionName = "Create new",
-                                        AnchorHref = "/majors/create"
-                                    }
+                                    new SideMenuCategoryOption(
+                                        "Find Sections",
+                                        this.GetActionUrl<SectionController>(nameof(SectionController.FindSections))),
+                                     new SideMenuCategoryOption(
+                                        "My Sections",
+                                        this.GetActionUrl<SectionController>(nameof(SectionController.MySections))),
                                 }
                             },
-                            new SideMenuCategory
-                            {
-                                AnchorHref = "#",
-                                CategoryName = "Direct link bro"
-                            }
                         }
                     },
-                    new SideMenuLeaf
-                    {
-                        HeaderName = "Users",
-                        Categories = new List<SideMenuCategory>
-                        {
-                            new SideMenuCategory
-                            {
-                                CategoryName = "Direct category",
-                                AnchorHref="/test/href",
-                                Icon="",
-                            }
-                        }
-                    }
                 }
             };
         }
