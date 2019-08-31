@@ -24,6 +24,7 @@ namespace Gamayun.UI.Utilities.AutoMapper.Profiles
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.State.ToString()))
                 .ForMember(dest => dest.TopicName, opt => opt.MapFrom(src => src.Topic.Name))
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade))
                 .ForMember(dest => dest.Presences, opt => opt.Ignore())
                 .ForMember(dest => dest.Dates, opt => opt.Ignore());
         }

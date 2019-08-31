@@ -210,5 +210,22 @@ namespace Gamayun.UI.Areas.Teacher.Controllers
 
             return Error();
         }
+
+        [HttpPost]
+        public ActionResult ChangeGrade(SectionGradeDTO dto)
+        {
+            var section = _dbContext.Sections.FirstOrDefault(x => x.ID == dto.Id);
+            if (section == null || dto.Grade == null 
+                || dto.Grade < 2 || dto.Grade > 5)
+            {
+                return Error();
+            }
+
+            section.Grade = dto.Grade;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(SectionView), new { id = dto.Id });
+
+        }
     }
 }

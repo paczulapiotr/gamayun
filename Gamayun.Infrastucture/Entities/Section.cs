@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamayun.Infrastucture.Entities
@@ -6,7 +7,10 @@ namespace Gamayun.Infrastucture.Entities
     public class Section : Entity
     {
         public string Name { get; set; }
-        
+
+        [Range(2, 5)]
+        public int? Grade { get; set; }
+
         public SectionState State{ get; set; }
         
         public int? TopicID { get; set; }

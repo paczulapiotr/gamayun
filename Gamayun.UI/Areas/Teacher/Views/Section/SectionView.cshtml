@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "View Semester";
 }
-@await Html.PartialAsync("_PageHeader", "Semester View Page")
+@await Html.PartialAsync("_PageHeader", "Section View Page")
 
 <hr />
 <div class="container-fluid">
@@ -10,6 +10,14 @@
         <p><strong>Name:</strong>&nbsp;@Model.Name</p>
         <p><strong>Status:</strong>&nbsp;@Model.Status</p>
         <p><strong>Topic Name:</strong>&nbsp;@Model.TopicName</p>
+        <form id="grade-form" method="post" asp-action="ChangeGrade" asp-controller="Section">
+            <input hidden asp-for="Id" />
+            <div class="form-group">
+                <strong>Section Grade:</strong>&nbsp;
+                <input style="width:initial; display:inline-block;" class="form-control" type="number" name="grade" min="2" value="@Model.Grade" max="5" step="1" />
+                <button class="btn btn-primary" disabled>Save</button>
+            </div>
+        </form>
 
         <table id="presence-picker" class="table table-striped">
             <thead>
@@ -72,4 +80,9 @@
 
         formInput.val(data.toString());
     });
+
+    var gradeForm = $('#grade-form');
+    gradeForm.find('input').change(function () {
+        gradeForm.find('button').prop('disabled', false);
+    })
 </script>
