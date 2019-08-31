@@ -1,0 +1,8 @@
+﻿@model IGridConfiguration
+@{
+    ViewData["Title"] = "My Sections";
+}
+
+@await Html.PartialAsync("_PageHeader", "My Sections")
+
+@await Html.PartialAsync("_Grid", Model)

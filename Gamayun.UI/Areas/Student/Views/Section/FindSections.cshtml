@@ -1,0 +1,25 @@
+﻿@model IGridConfiguration
+@{
+    ViewData["Title"] = "Find Section";
+    Model.Actions.Add(new GridAction
+    {
+        JsFunction = "signIn",
+        Title = "Sign In"
+    });
+}
+@await Html.PartialAsync("_PageHeader", "Find Section")
+
+@await Html.PartialAsync("_Grid", Model)
+
+<form id="sign-in-form" hidden asp-action="SignIn" asp-controller="Section">
+    <input name="id" />
+    <button type="submit"></button>
+</form>
+
+<script>
+    var signIn = function(item) {
+        var form = $('#sign-in-form');
+        form.find('[name="id"]').val(item.id);
+        form.find('button').click();
+    }
+</script>
