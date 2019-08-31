@@ -1,0 +1,88 @@
+﻿@model SectionVm
+@{
+    ViewData["Title"] = "View Semester";
+}
+@await Html.PartialAsync("_PageHeader", "Section View Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        <p><strong>Name:</strong>&nbsp;@Model.Name</p>
+        <p><strong>Status:</strong>&nbsp;@Model.Status</p>
+        <p><strong>Topic Name:</strong>&nbsp;@Model.TopicName</p>
+        <form id="grade-form" method="post" asp-action="ChangeGrade" asp-controller="Section">
+            <input hidden asp-for="Id" />
+            <div class="form-group">
+                <strong>Section Grade:</strong>&nbsp;
+                <input style="width:initial; display:inline-block;" class="form-control" type="number" name="grade" min="2" value="@Model.Grade" max="5" step="1" />
+                <button class="btn btn-primary" disabled>Save</button>
+            </div>
+        </form>
+
+        <table id="presence-picker" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    @foreach (var dateVm in Model.Dates)
+                    {
+                        <th>@dateVm.date</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var presenceData in Model.Presences)
+                {
+                    <tr>
+                        <td>@presenceData.Student</td>
+                        @foreach (var pres in presenceData.StudentPresences)
+                        {
+                            <td class="data-cell">
+                                <input class="big-checkbox was-present" type="checkbox" @(pres.wasPresent ? "checked" : "")>
+                                <input hidden class="date-id" value="@pres.presenceDateId" />
+                                <input hidden class="student-id" value="@presenceData.StudentId" />
+                                
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <form id="presence-form" method="post" asp-action="UpdatePresences" asp-controller="Section">
+            <input name="data" hidden />
+            <input name="sectionId" value="@Model.Id" hidden />
+            <button class="btn btn-primary" disabled>Save</button>
+        </form>
+
+
+
+        <div class="container-controls">
+            <a asp-action="SectionEdit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        </div>
+    </div>
+</div>
+<script>
+    $('.was-present').click(function(){
+        $('#presence-form button').prop("disabled", false)
+    })
+    $('#presence-form').submit(function () {
+        var dataCells = $("#presence-picker .data-cell");
+        var formInput = $('#presence-form input[name="data"]');
+        var data = [];
+        dataCells.each(function (index, elem) {
+            var wasPresent = $(elem).find(".was-present").get(0).checked;
+            var dateId = $(elem).find(".date-id").val();
+            var studentId = $(elem).find(".student-id").val();
+            
+            data.push("[" + studentId + ":" + dateId + ":" + wasPresent + "]");
+        });
+
+        formInput.val(data.toString());
+    });
+
+    var gradeForm = $('#grade-form');
+    gradeForm.find('input').change(function () {
+        gradeForm.find('button').prop('disabled', false);
+    })
+</script>

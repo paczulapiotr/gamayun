@@ -64,12 +64,12 @@ namespace Gamayun.UI.Areas.Admin.Controllers
         public ActionResult SemesterEdit(int id)
         {
             var vm = _dbContext.Semesters.Select(x =>
-           new EditSemesterCommandHandler.Command
-           {
-               ID = x.ID,
-               Major = x.Major,
-               FinishedOn = x.FinishedOn
-           }).FirstOrDefault(x => x.ID == id);
+            new EditSemesterCommandHandler.Command
+            {
+                ID = x.ID,
+                Major = x.Major,
+                FinishedOn = x.FinishedOn
+            }).FirstOrDefault(x => x.ID == id);
             if (vm == null)
             {
                 return ErrorResult();

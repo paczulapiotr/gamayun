@@ -1,0 +1,16 @@
+﻿@model TopicVm
+@{
+    ViewData["Title"] = "View Topic";
+}
+@await Html.PartialAsync("_PageHeader", "Topic View Page")
+
+<hr />
+<div class="container-fluid">
+    <div class="jumbotron">
+        <p><strong>Name:</strong>&nbsp;@Model.Name</p>
+        <p><strong>Description:</strong>&nbsp;@Model.Description</p>
+        <div class="container-controls">
+            <a asp-action="TopicEdit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        </div>
+    </div>
+</div>

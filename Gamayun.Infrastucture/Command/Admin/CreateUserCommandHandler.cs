@@ -133,7 +133,7 @@ namespace Gamayun.Infrastucture.Command.Admin
                     _dbContext.Add(new Student { AppUser = user });
                     break;
                 case TeacherCommand t:
-                    _dbContext.Add(new Teacher { AppUser = user });
+                    _dbContext.Add(new Entities.Teacher { AppUser = user });
                     break;
                 case AdminCommand a:
                     _dbContext.Add(new Entities.Admin { AppUser = user });

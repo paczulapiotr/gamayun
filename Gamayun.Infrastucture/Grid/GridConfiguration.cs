@@ -10,10 +10,13 @@ namespace Gamayun.Infrastucture.Grid
         public string GridSelector { get; set; }
 
         public string SelectHref { get; set; }
+        public int? PageSize { get; set; }
 
         public bool Selectable => !string.IsNullOrWhiteSpace(SelectHref);
 
         public string DataUrl { get; set; }
+
+        public List<GridAction> Actions { get; set; } = new List<GridAction>();
 
         public IEnumerable<GridProperty> GetGridProperties()
         {

@@ -16,10 +16,10 @@ namespace Gamayun.Infrastucture.Query.Admin
 
         public override GridResult<UserRM> Execute(GridFilters<UserRM> filters, Query query)
         {
-            var teachers = _dbContext.Admins
+            var admins = _dbContext.Admins
                 .Include(a => a.AppUser);
 
-            return Result(filters, teachers);
+            return Result(filters, admins);
         }
 
         public class Query : IGridQuery

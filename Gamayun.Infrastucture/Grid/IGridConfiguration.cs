@@ -7,7 +7,9 @@ namespace Gamayun.Infrastucture.Grid
         string GridSelector { get; }
         string DataUrl { get; }
         string SelectHref { get; }
+        int? PageSize { get; }
         bool Selectable { get; }
         IEnumerable<GridProperty> GetGridProperties();
+        List<GridAction> Actions { get; }
     }
 }

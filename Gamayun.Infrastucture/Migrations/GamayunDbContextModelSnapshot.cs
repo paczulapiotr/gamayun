@@ -120,7 +120,7 @@ namespace Gamayun.Infrastucture.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("SectionID");
+                    b.Property<int?>("SectionID");
 
                     b.HasKey("ID");
 
@@ -135,11 +135,19 @@ namespace Gamayun.Infrastucture.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Grade");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("SemesterID");
+
                     b.Property<int>("State");
 
                     b.Property<int?>("TopicID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("SemesterID");
 
                     b.HasIndex("TopicID");
 
@@ -186,13 +194,11 @@ namespace Gamayun.Infrastucture.Migrations
 
                     b.Property<int>("SectionID");
 
-                    b.Property<int>("Grade");
-
                     b.HasKey("StudentID", "SectionID");
 
                     b.HasIndex("SectionID");
 
-                    b.ToTable("StudentSection");
+                    b.ToTable("StudentSections");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Teacher", b =>
@@ -361,12 +367,15 @@ namespace Gamayun.Infrastucture.Migrations
                 {
                     b.HasOne("Gamayun.Infrastucture.Entities.Section", "Section")
                         .WithMany("PresenceDates")
-                        .HasForeignKey("SectionID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SectionID");
                 });
 
             modelBuilder.Entity("Gamayun.Infrastucture.Entities.Section", b =>
                 {
+                    b.HasOne("Gamayun.Infrastucture.Entities.Semester", "Semester")
+                        .WithMany()
+                        .HasForeignKey("SemesterID");
+
                     b.HasOne("Gamayun.Infrastucture.Entities.Topic", "Topic")
                         .WithMany("Sections")
                         .HasForeignKey("TopicID");
